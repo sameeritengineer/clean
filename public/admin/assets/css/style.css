@@ -1,0 +1,182 @@
+/*================================================================================
+	Item Name: Stack - Responsive Admin Theme
+	Version: 1.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #00b5b8;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #00b5b8;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.cnty-btn {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 40px;
+    padding: 9px 18px;
+    display: flex;
+    cursor: pointer;
+    margin-top: 25px;
+}
+span.country-name-text {
+    width: 100%;
+}
+.cnty-btn span.circle-right {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    background: #ccc;
+    margin-top: 5px;
+}
+.cnty-btn.active span.circle-right {
+    background: #5ac5ee;
+} 
+.cnty-btn.active span.country-name-text {
+    color: #5ac5ee;
+}
+.cnty-btn.active {
+    border: 1px solid #5ac5ee;
+}
+.cnt-wrapper .nav.nav-tabs .nav-item .nav-link.active {
+    background: #5ac5ee;
+    color: #fff;
+}
+.cnt-wrapper  .nav.nav-tabs .nav-item .nav-link {
+    padding: .5rem .7rem;
+    color: #5ac5ee;
+    border: 1px solid #5ac5ee;
+    border-radius: 0px;
+}
+hr.line-bx {
+    height: 1px;
+    background: #a9a9a9;
+    margin-top: 36px;
+}
+
+.panel.panel-default.mamberpanel {
+    width: 265px;
+    position: absolute;
+    right: 0px;
+}
+.panel.panel-default.mamberpanel ul.list-group.contact-list-box li.list-group-item {
+    display: table;
+}
+.panel-heading.c-list span {
+    background: #5ac5ee;
+    width: 100%;
+    float: left;
+    padding: 10px;
+    color: #fff;
+    font-weight: bold;
+    position: relative;
+}
+.user-img-lft img {
+    width: 100%;
+    border-radius: 50%;
+}
+i.fa.fa-times.closeicon {
+    position: absolute;
+    right: 16px;
+    top: 15px;
+    cursor: pointer;
+}
+.dot-ac {
+    
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    right: 10px;
+    top: 19px;
+    border-radius: 100%;
+}
+.color-online{background: #26bb00;}
+.color-offline {background: #ff0909;}
+.panel.panel-default.mamberpanel {
+    width: 345px;
+    position: fixed;
+    right: 0px;
+    top: 56px;
+    height: 100vh;
+    background: #fff;
+    border-left: 1px solid #E4E7ED;
+    margin-right: -345px;
+    transition: all ease 1s;
+}
+ul.list-group.contact-list-box li:last-child {
+    border-bottom: 0px;
+}
+.panel.panel-default.mamberpanel.open {
+    margin-right: 0px;
+}
+.panel.panel-default.mamberpanel ul.list-group.contact-list-box li.list-group-item {
+    border-left: 0px;
+}
+span.showactive {
+    margin-top: 4px;
+    background: #fff;
+    display: block;
+    color: #000;
+    padding: 6px 17px;
+    border-radius: 3px;
+}
