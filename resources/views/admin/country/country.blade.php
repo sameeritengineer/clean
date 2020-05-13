@@ -37,6 +37,7 @@
                       <thead>
                         <tr>
                           <th>#</th>
+                          <th>Parent</th>
                           <th>Name</th>
                           <th>Edit</th>
                           <th>Delete</th>
@@ -46,6 +47,7 @@
                         @foreach($countries as $country)
                         <tr>                  
                           <td>{{$loop->iteration}}</td>
+                          <td>{{$country->parent->name ?? "--"}}</td>
                           <td>{{$country->name}}</td>
                           <td><button type="button" class="btn btn-outline-warning" onclick="editCountry({{$country->id}})"><i class="fa fa-pencil"></i></button></td>
                           <td><button type="button" class="btn btn-outline-warning" onclick="deleteCountry({{$country->id}},'{{$country->name}}')"><i class="fa fa-trash"></i></button></td>    
@@ -75,7 +77,18 @@
       </div>
       <form action="{{route('addCountry')}}" id="CountryForm" method="post" novalidate>
         @csrf
-        <div class="modal-body">          
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="controls">              
+              <select class="form-control" name="parent_id">
+                <option value="0">Select</option>
+                @foreach($parent_countries as $country)
+                  <option value="{{$country->id}}">{{$country->name}}</option>
+                @endforeach
+              </select>
+            </div>
+            <span id="error" class="text-danger"></span>
+          </div>          
           <div class="form-group">
             <div class="controls">              
               <input type="text" placeholder="Add Country" id="name" name="name"  class="form-control" data-validation-regex-regex="[a-zA-Z][a-zA-Z ]+[a-zA-Z]$" required data-validation-regex-message="Only Alphabets and Space allwoed">
@@ -102,7 +115,18 @@
       </div>
       <form action="{{route('updateCountry')}}" id="updateCountryForm" method="post" novalidate>
         @csrf
-        <div class="modal-body">          
+        <div class="modal-body"> 
+          <div class="form-group">
+            <div class="controls">              
+              <select class="form-control" id="parent_id" name="parent_id">
+                <option value="0">Select</option>
+                @foreach($parent_countries as $country)
+                  <option value="{{$country->id}}">{{$country->name}}</option>
+                @endforeach
+              </select>
+            </div>
+            <span id="error" class="text-danger"></span>
+          </div>         
           <div class="form-group">
             <div class="controls">
               <input type="hidden" id="editId" name="id">              
@@ -155,6 +179,7 @@ function editCountry(id)
     {
       $("#editForm").find('#editId').val(data.id);
       $("#editForm").find('#editName').val(data.name);
+      $("#editForm").find('#parent_id').val(data.parent_id);
       $("#editForm").modal("show");      
     },    
   });

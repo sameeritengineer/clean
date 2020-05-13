@@ -22,6 +22,8 @@ Route::prefix('customer')->group(function ()
 	// Customer Registration and Login API's //
 	// 1.signup -> Request:- {"first_name":"manpreet","last_name":"kaur","email":"harpi@gmail.com","password":"mani@12345","password_cofirmation":"mani@12345","mobile":"956482315"} //
 
+    Route::post('save_chat','Api\userController@save_chat');
+    Route::post('get_all_chat_message','Api\userController@get_all_chat_message');
     Route::post('userRegister', 'Api\userController@userRegister');
 
     // 2.login -> Request:-{"email":"harpi@gmail.com","password":"mani@12345",} //
@@ -171,6 +173,8 @@ Route::prefix('provider')->group(function ()
     // 1.signup -> Request:- {"first_name":"manpreet","last_name":"kaur","email":"harpi@gmail.com","password":"mani@12345","password_cofirmation":"mani@12345","mobile":"956482315"}//
   
     Route::post('providerRegister', 'Api\service_provider\providerController@providerRegister');
+
+    Route::post('save_provider_lat_long','Api\service_provider\providerController@save_lat_long');
 
     // 2.login -> Request:-{"email":"harpi@gmail.com","password":"mani@12345",} //
 

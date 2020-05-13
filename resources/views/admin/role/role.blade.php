@@ -153,7 +153,7 @@
 <script type="text/javascript">
 function editRole(id)
 {
-  var url = "{{route('editRole')}}";
+  var url = "{{secure_url('serviceadmin/edit-role')}}";
   $.ajax
   ({
     type: "post",   

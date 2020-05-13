@@ -240,7 +240,7 @@
 <script>
 function viewproviderprofile(id)
 {
-  var url = "{{route('viewfullprofiledetails')}}";
+  var url = "{{secure_url('serviceadmin/view-full-provider-profile')}}";
   $.ajax
   ({
     type: "post",   
@@ -276,7 +276,7 @@ function deleteServiceprovider()
   ({
     type: 'POST',
     data: {"id":id," _token": "{{ csrf_token() }}",},
-    url: "{{route('destroyServiceProvider')}}",
+    url: "{{secure_url('serviceadmin/destroy-service-provider')}}",
     success: function (response)
     {
       if(response == "success")
@@ -305,7 +305,7 @@ $(".workingStatus").on("change", function(){
                     " _token": "{{ csrf_token() }}",
                                         
                     },
-            url: '{{route('updateWorkingStatus')}}',
+            url: '{{secure_url('serviceadmin/Update-WorkingDay-Status')}}',
             success: function (response) {
                 if(response == "success"){
                 if(value == 0){

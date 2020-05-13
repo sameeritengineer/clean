@@ -933,4 +933,20 @@ class UserController extends Controller
       return "success";
     }
   }
+
+  public function chat()
+  {
+    $items = \App\Chat::orderBy('id','desc')->get();
+	  $collection = collect($items);
+    $chats = $collection->unique('user_id','provider_id');
+    //return $uniqueItems;
+	//return $chats;
+    return view('admin.chat.index',compact('chats'));
+  }
+
+  public function showChat($user_id,$provider_id)
+  {
+    $chats = \App\Chat::where('user_id',$user_id)->where('provider_id',$provider_id)->get();
+    return view('admin.chat.show',compact('chats'));
+  }
 }

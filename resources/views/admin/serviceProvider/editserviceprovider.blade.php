@@ -1,4 +1,4 @@
-@extends('admin.layouts.index')
+﻿@extends('admin.layouts.index')
 @section('title','Service Providers')
 @section('content')
 <div class="app-content content container-fluid">
@@ -396,7 +396,7 @@ $('#servicelist').on("change",function (){
  var serviceId = $(this).find('option:selected').val();
         $.ajax
         ({
-            url: "{{route('getServicetype')}}",
+            url: "{{secure_url('serviceadmin/get-servicetype-list')}}",
             type: "POST",
             data:{"_token":"{{csrf_token()}}","serviceId":serviceId,},
             success: function (response) 
@@ -416,7 +416,7 @@ $('.country').change(function()
     $.ajax
     ({
       type:"GET",
-      url:"{{url('serviceadmin/get-state-list')}}?country_id="+countryID,
+      url:"{{secure_url('serviceadmin/get-state-list')}}?country_id="+countryID,
       success:function(res)
       {
         if(res)
@@ -447,7 +447,7 @@ $('.state').change(function()
     $.ajax
     ({
       type:"GET",
-      url:"{{url('serviceadmin/get-city-list')}}?state_id="+StateID,
+      url:"{{secure_url('serviceadmin/get-city-list')}}?state_id="+StateID,
       success:function(res)
       {
         if(res)
@@ -475,7 +475,7 @@ $('.city').change(function()
     $.ajax
     ({
       type:"GET",
-      url:"{{url('serviceadmin/get-zipcode-list')}}?city_id="+cityID,
+      url:"{{secure_url('serviceadmin/get-zipcode-list')}}?city_id="+cityID,
       success:function(res)
       {
         if(res)

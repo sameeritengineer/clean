@@ -126,7 +126,7 @@ function cancelthisjob(id)
       ({
         type: 'POST',
         data: {"id":id," _token": "{{ csrf_token() }}",},
-        url: "{{route('cancelthisjob')}}",
+        url: "{{secure_url('serviceadmin/cancelthisjob')}}",
         success: function (response)
         {
           if(response == 1)

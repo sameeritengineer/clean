@@ -49,8 +49,8 @@
                           <td>{{$loop->iteration}}</td>
                           <td>{{$zip->city->name}}</td>
                           <td>{{$zip->zipcode}}</td>
-                          <td><button type="button" class="btn btn-outline-warning" onclick="editZip({{$zip->id}})"><i class="fa fa-pencil"></i></button></td>  
-                          <td><button type="button" class="btn btn-outline-warning" onclick="deleteZip({{$zip->id}},'{{$zip->zipcode}}')"><i class="fa fa-trash"></i></button></td>
+                          <td><button type="button" class="btn btn-outline-warning" onclick="editZip('{{$zip->id}}')"><i class="fa fa-pencil"></i></button></td>  
+                          <td><button type="button" class="btn btn-outline-warning" onclick="deleteZip('{{$zip->id}}','{{$zip->zipcode}}')"><i class="fa fa-trash"></i></button></td>
                         </tr>
                         @endforeach
                       </tbody>
@@ -105,12 +105,21 @@
               </select>
             </div>
           </div>
+          
           <label>Zipcode: </label>
           <div class="form-group">
             <div class="controls">
               <input type="text" placeholder="Add Zipcode" name="zipcode" required class="form-control">
             </div>
             <span id="zipErr" class="text-danger"></span>
+          </div>
+          <label>Near By: </label>
+          <div class="form-group">
+            <div class="controls">
+              <select name="near_by[]" multiple class="form-control near_by select2" style="width:100%">
+                <option value="">Select Near By Zipcode</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -150,7 +159,7 @@
           <div class="form-group">
             <div class="controls">
               <select id="select" required class="form-control state">
-                <option value="" disabled="disabled">Select State</option>              
+                <option value="" disabled="disabled">Select State</option>
               </select>
             </div>
             <span id="stateErr" class="text-danger"></span>
@@ -159,7 +168,7 @@
           <div class="form-group">
             <div class="controls">
               <select name="cityId" id="select" required class="form-control city">
-                <option value="" disabled="disabled">Select City</option>                
+                <option value="" disabled="disabled">Select City</option>
               </select>
             </div>
             <span id="cityErr" class="text-danger"></span>
@@ -172,6 +181,14 @@
             </div>
           </div>
           <span id="zip" class="text-danger"></span>
+          <label>Near By: </label>
+          <div class="form-group">
+            <div class="controls">
+              <select name="near_by[]" multiple="multiple" class="form-control near_by multipleSelect" style="width:100%">
+                <option value="">Select Near By Zipcode</option>
+              </select>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <input type="reset" class="btn btn-outline-secondary btn-lg clear" data-dismiss="modal" value="Close">
@@ -205,9 +222,12 @@
   </div>
 </div>
 <script type="text/javascript">
+$(document).ready(function() {
+    $('.multipleSelect').select2();
+});
 function editZip(id)
 {
-  var url = "{{route('editZipcode')}}";
+  var url = "{{secure_url('serviceadmin/edit-zip')}}";
   $.ajax
   ({
     type: "post",   
@@ -215,8 +235,10 @@ function editZip(id)
     data: {"_token": "{{csrf_token()}}","id":id},
     success:function(data)
     {
+      console.log(data)
       $("#editForm").find('.state option').remove();
       $("#editForm").find('.city option').remove();
+      $("#editForm").find('.near_by option').remove();
       data.stateName.forEach( function(element)
       {
         $("#editForm").find('.state').append(element);
@@ -224,10 +246,15 @@ function editZip(id)
       data.cityName.forEach( function(element)
       {
         $("#editForm").find('.city').append(element);
-      });     
+      }); 
+      data.getAllZipcode.forEach( function(element)
+      {
+        $("#editForm").find('.near_by').append(element);
+      });    
       $("#editForm").find('#editId').val(data.id);
       $("#editForm").find('#zipcode').val(data.zipcode);
       $("#editForm").find('.city').val(data.city_id);
+      $("#editForm").find('.near_by').val(data.near_by);
       $("#editForm").find('.country').val(data.countryId);
       $("#editForm").find('.state').val(data.stateId);
       $("#editForm").modal("show");      
@@ -251,6 +278,7 @@ $('#updateZipForm').submit(function(e)
     processData: false,
     success:function(data)
     {
+      console.log(data)
       if(data == 1)
       {
         toastr.success("You'r successfully updated zipcode", "Great !");
@@ -331,7 +359,7 @@ $('.country').change(function()
     $.ajax
     ({
       type:"GET",
-      url:"{{url('serviceadmin/get-state-list')}}?country_id="+countryID,
+      url:"{{secure_url('serviceadmin/get-state-list')}}?country_id="+countryID,
       success:function(res)
       {
         if(res)
@@ -359,12 +387,19 @@ $('.state').change(function()
     $.ajax
     ({
       type:"GET",
-      url:"{{url('serviceadmin/get-city-list')}}?state_id="+stateID,
+      url:"{{secure_url('serviceadmin/get-city-list')}}?state_id="+stateID,
       success:function(res)
       {
         if(res)
         {
-          $(".city").html(res);      
+          if(res.cities)
+          {
+            $(".city").html(res.cities);
+          }
+          if(res.zipcode)
+          {
+            $(".near_by").html(res.zipcode);
+          }  
         }
         else
         {

@@ -137,7 +137,7 @@ $(".workingStatus").on("change", function(){
                         " _token": "{{ csrf_token() }}",
                                             
                         },
-                url: '{{route('updateWorkingStatus')}}',
+                url: '{{secure_url('serviceadmin/Update-WorkingDay-Status')}}',
                 success: function (response) {
                     if(response == "success"){
                     if(value == 0){

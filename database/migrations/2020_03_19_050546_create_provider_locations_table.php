@@ -17,7 +17,9 @@ class CreateProviderLocationsTable extends Migration
             $table->increments('id');
             $table->integer('provider_id')->unsigned();            
             $table->foreign('provider_id')->references('id')->on('users')->onDelete('cascade');
-            $table->text('location');
+            $table->text('location')->nullable();
+            $table->char('lat')->nullable();
+            $table->char('long')->nullable();
             $table->timestamps();
         });
     }

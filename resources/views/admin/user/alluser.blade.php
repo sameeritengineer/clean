@@ -132,7 +132,7 @@
         " _token": "{{ csrf_token() }}",
         // "_method":"delete",
       },
-      url: "{{route('destroyUser')}}",
+      url: "{{secure_url('serviceadmin/destroy-user')}}",
       success: function (response)
       {
         if(response == "success")
@@ -162,7 +162,7 @@
         "value":value,
         " _token": "{{ csrf_token() }}",                               
       },
-      url: '{{route('updateUserStatus')}}',
+      url: '{{secure_url('serviceadmin/updateUserStatus')}}',
       success: function (response)
       {
         console.log(response)
@@ -197,7 +197,7 @@
         "value":value,
         " _token": "{{ csrf_token() }}",                               
       },
-      url: "{{route('ban_ip')}}",
+      url: "{{secure_url('serviceadmin/ban_ip')}}",
       success: function (response)
       {
         console.log(response)

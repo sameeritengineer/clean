@@ -37,6 +37,8 @@
                           <th>Promo Name</th>
                           <th>Service</th>
                           <th>Discount</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
                           <th>Edit</th>
                           <th>Delete</th>
                         </tr>
@@ -48,6 +50,8 @@
                           <td>{{$promo->promo_name}}</td>
                           <td>{{$promo->service->name}}</td>
                           <td>{{$promo->discount}}</td>
+                          <td>{{$promo->start_date}}</td>
+                          <td>{{$promo->end_date}}</td>
                           <td><button type="button" class="btn btn-outline-warning" onclick="editService('{{$promo->id}}','{{route('promo.show',['id'=>$promo->id])}}')"><i class="fa fa-pencil"></i></button></td>
                           <td><button type="button" class="btn btn-outline-warning" onclick="deleteService('{{$promo->id}}','{{$promo->promo_name}}')"><i class="fa fa-trash"></i></button></td>    
                         </tr>
@@ -96,6 +100,25 @@
               <input type="text" placeholder="Add Discount" id="discount" name="discount"  class="form-control" required>
             </div>
           </div>
+
+          <div class="form-group">
+            <div class="controls">              
+              <input type="text" placeholder="Enter Start Date" id="start_date1" name="start_date"  class="form-control start_date" required>
+              <!-- <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+              </div> -->
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="controls">              
+              <input type="text" placeholder="Enter End Date" id="end_date1" name="end_date" class="form-control end_date" required>
+              <!-- <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+              </div> -->
+            </div>
+          </div>
+
           <div class="form-group">
             <div class="controls">              
               <input type="radio" name="status" value="active" checked>
@@ -145,6 +168,25 @@
               <input type="text" placeholder="Add Discount" id="discount" name="discount" class="form-control" required>
             </div>
           </div>
+
+           <div class="form-group">
+            <div class="controls">              
+              <input type="text" placeholder="Enter Start Date" id="start_date" name="start_date"  class="form-control start_date" required>
+              <!-- <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+              </div> -->
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="controls">              
+              <input type="text" placeholder="Enter End Date" id="end_date" name="end_date" class="form-control end_date" required>
+              <!-- <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+              </div> -->
+            </div>
+          </div>
+          
           <div class="form-group">
             <div class="controls">              
               <input type="radio" id="active" name="status" value="active">
@@ -186,6 +228,7 @@
 </div>
 
 <script type="text/javascript">
+
 function editService(id,url)
 {
   $.ajax
@@ -200,6 +243,8 @@ function editService(id,url)
       $("#editForm").find('#editName').val(data.promo_name);
       $("#editForm").find('#service_id').val(data.service_id);
       $("#editForm").find('#discount').val(data.discount);
+      $("#editForm").find('#start_date').val(data.start_date);
+      $("#editForm").find('#end_date').val(data.end_date);
       if(data.status == "active")
       {
         $("#editForm").find('#active').attr('checked',true);
@@ -373,6 +418,26 @@ $('.clear').click(function()
   $("#inlineForm").find('.help-block ul li').remove();
   $("#inlineForm").find('.text-danger').text('');
   $('#addServiceForm')[0].reset();
+});
+
+// $('.datepicker').datepicker
+// ({
+//     format: 'mm/dd/yyyy',
+//     todayHighlight: true,
+//     minDate: new Date()
+// });
+var dateToday = new Date();
+var dates = $(".start_date, .end_date").datepicker({
+    defaultDate: "+1w",
+    changeMonth: true,
+    numberOfMonths: 3,
+    minDate: dateToday,
+    onSelect: function(selectedDate) {
+        var option = this.class == "start_date" ? "minDate" : "maxDate",
+            instance = $(this).data("datepicker"),
+            date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+        dates.not(this).datepicker("option", option, date);
+    }
 });
 </script>
 @endsection

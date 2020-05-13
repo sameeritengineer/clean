@@ -1,4 +1,4 @@
-@extends('admin.layouts.index')
+﻿@extends('admin.layouts.index')
 @section('title','Prevent Notification')
 @section('content')
 <div class="app-content content container-fluid load">
@@ -103,7 +103,7 @@
 <script type="text/javascript">
 function unblockList(id)
 {
-  var url = "{{route('unblock_list')}}";
+  var url = "{{secure_url('serviceadmin/unblock_list')}}";
   $.ajax
   ({
     type: "post",   

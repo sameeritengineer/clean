@@ -527,7 +527,7 @@ class providerController extends Controller
     }
     else
     {
-      $user = User::find($request->id);
+      $user = \App\ProviderProfile::where('serviceprovider_id',$request->id)->first();
       if($user != null)
       {   
           if($user->image != null)
@@ -1702,6 +1702,36 @@ class providerController extends Controller
         {
             return Response::json(['isSuccess' => false, 'isError' => true, 'message' => 'Something Went Wrong ']);
         }   
+    }
+
+    public function save_lat_long(Request $request)
+    {
+      $input = $request->all();
+      $rules = array(
+        'provider_id'      => 'required',
+        'lat'   => 'required',
+        'long'=>'required'
+       );
+      $validator = Validator::make($input, $rules);
+      if($validator->fails()) 
+      {
+        return Response::json(['isSuccess' => false, 'isError' => true, 'message' => $validator->errors()->first()]);
+      }
+      else
+      {
+        $provider = new \App\ProviderLocation;
+        $provider->provider_id = $request->provider_id;
+        $provider->lat = $request->lat;
+        $provider->long = $request->long;
+        if($provider->save())
+        {
+          return Response::json(['isSuccess' => true, 'isError' => false, 'message'=>'Provider location has been saved!.','payload'=>$provider]);
+        }
+        else
+        {
+          return Response::json(['isSuccess' => false, 'isError' => true, 'message'=>'Something error while saving your location!.']);
+        }
+      }
     }
 }
 

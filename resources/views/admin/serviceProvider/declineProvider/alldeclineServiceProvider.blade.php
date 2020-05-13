@@ -246,7 +246,7 @@
 <script>
 function viewproviderprofile(id)
 {
-  var url = "{{route('viewProviderProfile')}}";
+  var url = "{{secure_url('serviceadmin/viewProviderProfile')}}";
   $.ajax
   ({
     type: "post",   
@@ -284,7 +284,7 @@ function deleteServiceprovider(){
                 "id":id,
                 " _token": "{{ csrf_token() }}",
               },
-          url: "{{route('destroyunApprovedProvider')}}",
+          url: "{{secure_url('serviceadmin/destroy-Unapproved-provider')}}",
           success: function (response) {
 
               if(response == "success"){
@@ -306,7 +306,7 @@ function updateStatus(id)
       ({
         type: 'POST',
         data: {"id":id," _token": "{{ csrf_token() }}",},
-        url: "{{route('updateStatus')}}",
+        url: "{{secure_url('serviceadmin/updateStatus')}}",
         success: function (response)
         {
           if(response == 1)

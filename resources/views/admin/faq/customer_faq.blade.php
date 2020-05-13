@@ -197,7 +197,7 @@
 <script type="text/javascript">
 function editcustomerFaq(id)
 {
-  var url = "{{route('editcustomerFaq')}}";
+  var url = "{{secure_url('serviceadmin/edit-customer-Faq')}}";
   $.ajax
   ({
     type: "post",   
@@ -205,6 +205,7 @@ function editcustomerFaq(id)
     data: {"_token": "{{csrf_token()}}","id":id},
     success:function(data)
     {
+console.log(data)
       $("#editForm").find('#editId').val(data.id);
       $("#editForm").find('#editName').val(data.question);
       $("#editForm").find('#spanishquestion').val(data.spanishquestion);

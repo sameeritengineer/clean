@@ -171,7 +171,7 @@
 <script type="text/javascript">
 function editState(id)
 {
-  var url = "{{route('editState')}}";
+  var url = "{{secure_url('serviceadmin/edit-state')}}";
   $.ajax
   ({
     type: "post",   

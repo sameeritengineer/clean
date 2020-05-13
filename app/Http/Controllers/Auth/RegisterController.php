@@ -77,13 +77,14 @@ class RegisterController extends Controller
         $users->last_name = $data['last_name'];
         $users->email = $data['email'];
         $users->password = Hash::make($data['password']);
-        //$users->ip_address = $request->getClientIp()
+        $users->status = 1;
+        $users->working_status = 0;
         $users->mobile = $data['mobile'];
         if($users->save())
         {
-            $roles = new Role;
-            $roles->name = "customer";
-            if($roles->save())
+            $roles =Role::where('name','customer')->first();
+            //$roles->name = "customer";
+            if($roles != null)
             {
                 $userroles = new Userrole;
                 $userroles->user_id = $users->id;

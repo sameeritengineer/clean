@@ -193,7 +193,7 @@ function deleteServiceproviderprofilepic(){
                 "id":id,
                 " _token": "{{ csrf_token() }}",
               },
-          url: "{{route('destroyunapproveprofilepic')}}",
+          url: "{{secure_url('serviceadmin/destroy-Unapproved-profile-pic')}}",
           success: function (response) {
 
               if(response == "success"){
@@ -215,7 +215,7 @@ function updateProfileStatus(id)
       ({
         type: 'POST',
         data: {"id":id," _token": "{{ csrf_token() }}",},
-        url: "{{route('updateProfileStatus')}}",
+        url: "{{secure_url('serviceadmin/updateProfileStatus')}}",
         success: function (response)
         {
           if(response == 1)

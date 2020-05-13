@@ -15,8 +15,10 @@ class CountryController extends Controller
 {
     public function country()
     {
-        $countries = Country::orderBy('id','desc')->get();
-        return view('admin.country.country',compact('countries'));
+        $parent_countries = Country::where('parent_id',0)->get();
+        $countries = Country::with('parent')->orderBy('id','desc')->get();
+        //return $countries;
+        return view('admin.country.country',compact('countries','parent_countries'));
     }
 
     public function storeCountry(Request $request)
@@ -32,6 +34,7 @@ class CountryController extends Controller
         else
         {
             $countries = new Country;
+            $countries->parent_id = $request->parent_id;
             $countries->name = $request->name;
             if($countries->save())
             {
@@ -62,6 +65,7 @@ class CountryController extends Controller
         else
         {
             $countries = Country::find($request->id);
+            $countries->parent_id = $request->parent_id;
             $countries->name = $request->name; 
             if($countries->save())
             {
@@ -277,18 +281,47 @@ class CountryController extends Controller
 
     public function getCityList(Request $request)
     {
-        $cities = City::where("state_id",$request->state_id)->get();
+        $cities = City::where("state_id",$request->state_id)->with('zipcodes')->get();
+
         if(count($cities)>0)
         {
-            $html = '<option value="">Select City</option>';
+            $html['zipcode'] = '<option value="">Select Near By</option>';
+            foreach($cities as $zipcodes)
+            {
+                foreach($zipcodes->zipcodes as $zip)
+                {
+                    $zipcode = Zipcode::where('zipcode', 'LIKE', '%' . $zip->zipcode . '%')->get();
+                    if(count($zipcode)>0)
+                    {
+                        foreach($zipcode as $code)
+                        {
+                            if($zip == $code)
+                            {
+                                $html['zipcode'].="<option selected value=".$zip->zipcode.">".$zip->zipcode."</option>";
+                            }
+                            else
+                            {
+                                $html['zipcode'].="<option value=".$zip->zipcode.">".$zip->zipcode."</option>";
+                            }
+                        }
+                        
+                    }
+                    else
+                    {
+                        $html['zipcode'].="<option value=".$zip->zipcode.">".$zip->zipcode."</option>";
+                    }
+                }
+            }
+            
+            $html['cities'] = '<option value="">Select City</option>';
             foreach ($cities as $value)
             {
-                $html.="<option value=".$value->id.">".$value->name."</option>";
+                $html['cities'].="<option value=".$value->id.">".$value->name."</option>";
             }
         }
         else
         {
-            $html = '<option value="">No city found</option>';
+            $html['cities'] = '<option value="">No city found</option>';
         }
         return response()->json($html);
     }
@@ -296,8 +329,9 @@ class CountryController extends Controller
     public function zipcode()
     {
         $countries = Country::orderBy('id','desc')->get(); 
-        $zipcodes = Zipcode::orderBy('id','desc')->get();                          
-        return view('admin.country.zipcode',compact('countries','zipcodes'));
+        $zipcodes = Zipcode::orderBy('id','desc')->get();
+        $near_by = Zipcode::where('near_by','=',null)->get();                          
+        return view('admin.country.zipcode',compact('countries','zipcodes','near_by'));
     }
 
     public function storeZipcode(Request $request)
@@ -315,6 +349,7 @@ class CountryController extends Controller
             $zipcodes = new Zipcode;
             $zipcodes->city_id = $request->cityId;
             $zipcodes->zipcode = $request->zipcode;
+            $zipcodes->near_by = implode(',',$request->near_by) ?? null;
             if($zipcodes->save())
             {
                 return 1;
@@ -329,7 +364,11 @@ class CountryController extends Controller
     public function editZipcode(Request $request)
     {
         $zipcodes = Zipcode::find($request->id);
-        $cities = City::find($zipcodes->city_id);
+if($zipcodes->near_by != null)
+{
+	$zipcodes->near_by = explode(',',$zipcodes->near_by);
+}
+        $cities = City::with('zipcodes')->find($zipcodes->city_id);
         $states = State::find($cities->state_id);        
         $zipcodes->countryId = $states->country_id;
         $zipcodes->stateId = $states->id;
@@ -340,20 +379,29 @@ class CountryController extends Controller
             $state = "<option value=".$key->id." class='remove'>".$key->name."</option>";
             array_push($allState, $state);
         }
-        $city = City::where('state_id',$cities->state_id)->get(['id','name']);
-        $allCities = array();
+        $city = City::with('zipcodes')->where('state_id',$cities->state_id)->get();
+        $allCities = array();$allNearBy=array();
         foreach($city as $key)
         {
             $getCity = "<option value=".$key->id." class='remove'>".$key->name."</option>";
             array_push($allCities, $getCity);
+            foreach($key->zipcodes as $zipcode)
+            {
+
+			$getZipcode = "<option value=".$zipcode->zipcode." class='remove'>".$zipcode->zipcode."</option>";
+            }
+            array_push($allNearBy, $getZipcode);
         }
         $zipcodes->stateName = $allState;
         $zipcodes->cityName = $allCities;
+        $zipcodes->getAllZipcode = $allNearBy;
         return  $zipcodes;
     }
 
     public function updateZipcode(Request $request)
     {
+        //$request['near_by'] = implode(',',$request->near_by);
+      
         $validator = Validator::make($request->all(), [
             'zipcode'=>'unique:zipcodes,zipcode,' .$request->id,
             'cityId' => 'required',
@@ -369,6 +417,7 @@ class CountryController extends Controller
             $zipcodes = Zipcode::find($request->id);
             $zipcodes->city_id = $request->cityId;
             $zipcodes->zipcode = $request->zipcode;
+            $zipcodes->near_by = implode(',',$request->near_by);
             if($zipcodes->save())
             {
                 return 1;

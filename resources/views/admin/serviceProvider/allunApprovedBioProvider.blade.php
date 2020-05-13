@@ -156,16 +156,16 @@ function deleteServiceprovider(){
 
      var id =    $("#serviceproviderId").attr('data-id');
      var url =    $("#serviceproviderId").attr('data-url');
-
+console.log('hello')
    $.ajax({
            type: 'POST',
            data: {
                 "id":id,
                 " _token": "{{ csrf_token() }}",
               },
-          url: "{{route('destroyunapprovedBio')}}",
+          url: "{{secure_url('serviceadmin/destroy-Unapproved-bio-pic')}}",
           success: function (response) {
-
+	console.log(response)
               if(response == "success"){
                 
                 $('#unapprovedprovider'+id).remove();
@@ -185,9 +185,10 @@ function updatebioStatus(id)
     ({
       type: 'POST',
       data: {"id":id," _token": "{{ csrf_token() }}",},
-      url: "{{route('updatebioStatus')}}",
+      url: "{{secure_url('serviceadmin/updatebioStatus')}}",
       success: function (response)
       {
+console.log(response);
         if(response == 1)
         {                                       
           $('#unapprovedprovider'+id).remove();

@@ -265,8 +265,8 @@
 
 function editServiceType(id)
 {
-  var url = "{{route('editServiceType')}}";
-  var imgUrl= "{{url('normal_images')}}";
+  var url = "{{secure_url('serviceadmin/edit-service-type')}}";
+  var imgUrl= "{{secure_url('normal_images')}}";
   $.ajax
   ({
     type: "post",   
@@ -456,7 +456,7 @@ $('body').on('change', '.serviceTypeStatus', function()
     type: 'POST',
     context: this,
     data: {"id": id,"value":value," _token": "{{ csrf_token() }}",},
-    url: '{{route('serviceTypeStatus')}}',
+    url: '{{secure_url('serviceadmin/service-type-status')}}',
     success: function (response)
     {
       if(response == "success")

@@ -1,0 +1,5 @@
+@include('supervisor.layouts.header')
+@include('supervisor.layouts.nav')
+@include('supervisor.layouts.sidebar')
+@yield('content')
+@include('supervisor.layouts.footer')

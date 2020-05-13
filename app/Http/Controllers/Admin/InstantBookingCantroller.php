@@ -490,26 +490,63 @@ class InstantBookingCantroller extends Controller
 
     public function unfilled_jobs()
     {
-      $states = []; $cities = [];
-      $final_states = []; $final_cities = [];
-      $acceptedjobs = Instant_schedule_job::get(['job_id']);
-      $job_ids = array();
-      foreach ($acceptedjobs as $key => $value)
-      {
-        $job_ids[] = $value->job_id;
-      }
-      $OpenOpportunites = InstantBooking::whereNotIn('id',$job_ids)->where('Parent_id','=',null)->orderBy('id','desc')->get()->pluck('zipcode');
       $countries = \App\Country::get();
-      $zipcodes = \App\Zipcode::with('city')->whereIn('zipcode',$OpenOpportunites)->get();
-      foreach($zipcodes as $zipcode)
-      {
-        $state = $zipcode->city->state->name;
-        $city = $zipcode->city->name;
-        array_push($states,$state);
-        array_push($cities,$city);
-      }
+      return view('admin.InstantBooking.unfilled_jobs',compact('countries'));
+    }
 
-      return view('admin.InstantBooking.unfilled_jobs',compact('countries','states','final_states','final_cities'));
+    public function get_unfilled_jobs_state($id)
+    {
+      $html = '';
+      $country = \App\Country::find($id);
+      if(strtolower($country->name) == "europe")
+      {
+        $countries = \App\Country::whereParentId($id)->get();
+        foreach($countries as $country)
+        {
+          $html.='<div class="col-md-3" onclick="get_state_list('.$country->id.')"><div class="cnty-btn active"><span class="country-name-text">'.$country->name.'</span><span class="circle-right "></span></div></div>';
+        }
+        return response()->json(['data'=>$html]);
+      }
+      else
+      {
+        $cities = []; $new_states = [];
+        $states = \App\State::whereCountryId($id)->get();
+        $acceptedjobs = Instant_schedule_job::get(['job_id']);
+        $job_ids = array();
+        foreach ($acceptedjobs as $key => $value)
+        {
+          $job_ids[] = $value->job_id;
+        }
+        $OpenOpportunites = InstantBooking::whereNotIn('id',$job_ids)->where('Parent_id','=',null)->orderBy('id','desc')->get()->pluck('zipcode');
+        $zipcodes = \App\Zipcode::with('city')->whereIn('zipcode',$OpenOpportunites)->get();
+        foreach($zipcodes as $zipcode)
+        {
+          $city = $zipcode->city->name;
+          $state = $zipcode->city->state->name;
+          array_push($cities,$city);
+          array_push($new_states,$state);
+        }
+       
+        if(count($states)>0)
+        {
+          foreach($states as $state)
+          {
+            if(in_array($state->name,$new_states))
+            {
+              $html.='<div class="col-md-3" onclick="states('.$state->id.')"><div class="cnty-btn active"><span class="country-name-text">'.$state->name.'</span><span class="circle-right "></span></div></div>';
+            }
+            else
+            {
+              $html.='<div class="col-md-3" onclick="states('.$state->id.')"><div class="cnty-btn"><span class="country-name-text">'.$state->name.'</span><span class="circle-right "></span></div></div>';
+            }
+          }
+        }
+        else
+        {
+          $html.='<div class="col-md-3"><div class="cnty-btn"><span class="country-name-text">No list found.</span></div></div>';
+        }   
+        return $html;
+      }
     }
 
     public function get_unfilled_jobs_city($id)
@@ -523,7 +560,6 @@ class InstantBookingCantroller extends Controller
         $job_ids[] = $value->job_id;
       }
       $OpenOpportunites = InstantBooking::whereNotIn('id',$job_ids)->where('Parent_id','=',null)->orderBy('id','desc')->get()->pluck('zipcode');
-      $countries = \App\Country::get();
       $zipcodes = \App\Zipcode::with('city')->whereIn('zipcode',$OpenOpportunites)->get();
       foreach($zipcodes as $zipcode)
       {
@@ -531,18 +567,229 @@ class InstantBookingCantroller extends Controller
         array_push($cities,$city);
       }
       $html = '';
-      foreach($state->cities as $city)
+      if(count($state->cities)>0)
       {
-        if(in_array($city->name,$cities))
+        foreach($state->cities as $city)
         {
-          $html.='<div class="col-md-3"><div class="cnty-btn active"><span class="country-name-text">'.$city->name.'</span><span class="circle-right "></span></div></div>';
+          if(in_array($city->name,$cities))
+          {
+            $html.='<div class="col-md-3" onclick="get_jobs_lists('.$city->id.')"><div class="cnty-btn active"><span class="country-name-text">'.$city->name.'</span><span class="circle-right "></span></div></div>';
+          }
+          else
+          {
+            $html.='<div class="col-md-3"><div class="cnty-btn"><span class="country-name-text">'.$city->name.'</span><span class="circle-right "></span></div></div>';
+          }
         }
-        else
-        {
-          $html.='<div class="col-md-3"><div class="cnty-btn"><span class="country-name-text">'.$city->name.'</span><span class="circle-right "></span></div></div>';
-        }
+      }
+      else
+      {
+        $html.='<div class="col-md-3"><div class="cnty-btn"><span class="country-name-text">No list found.</span></div></div>';
       }
       return response()->json($html);
     }
 
+    public function get_unfilled_jobs($id)
+    {
+      $zipcode = \App\Zipcode::whereCityId($id)->get()->pluck('zipcode');
+      $acceptedjobs = Instant_schedule_job::get(['job_id']);
+      $job_ids = array();
+      foreach ($acceptedjobs as $key => $value)
+      {
+        $job_ids[] = $value->job_id;
+      }
+      $html = "";
+      $OpenOpportunites = InstantBooking::whereNotIn('id',$job_ids)->where('Parent_id','=',null)->whereIn('zipcode',$zipcode)->orderBy('id','desc')->get();
+      if(count($OpenOpportunites)>0)
+      {
+        foreach($OpenOpportunites as $data)
+        {
+           $dataaaa = array();
+           $idsss = explode(',',$data->Services);
+           for($i=0;$i<count($idsss);$i++)
+           {
+             $getid =  $idsss[$i];
+             $service = Servicetype::where('id',$getid)->first();
+             array_push($dataaaa, $service->name);
+           }
+           $service_string = implode(' , ', $dataaaa); 
+           $data->Services_names = $service_string;
+           $customername = User::where('id' , $data->cutomer_id)->first();
+           $data->cust_firstname= $customername->first_name;
+           $data->cust_image= $customername->image; 
+           $html.="<tr><td style='curser:pointer' onclick='get_job_list(".$data->zipcode.",".$data.")'>".$data->id."</td><td>".$data->cust_firstname."</td><td>".$data->customer_address."</td><td>".$data->zipcode."</td><td>".$data->date."</td><td>".$data->time."</td><td>".$data->Services_names."</td></tr>";
+        }
+      }
+      else
+      {
+        $html.="No list found.";
+      }
+      return $html;
+    }
+
+    public function get_provider_zipcode(Request $request)
+    {
+      $apiKey="AIzaSyBHAToEmuatZIY6t8avPSYNtZvUqSbcRmQ";
+      $data = $request->data;
+      $active_users = [];$unaviable_users = [];$nearby = [];
+      $zipcode_id = \App\Zipcode::whereZipcode($request->data['zipcode'])->first();
+      if($zipcode_id != null)
+      {
+        if($zipcode_id->near_by != null)
+        {
+          $array = explode(',',$zipcode_id->near_by);
+          $nearby_id = \App\Zipcode::whereIn('zipcode',$array)->get();
+          if(count($nearby_id)>0)
+          {
+            foreach($nearby_id as $ids)
+            {
+              $providers = \App\Useraddress::where('zipCode',$ids->id)->get();
+              if(count($providers)>0)
+              {
+                foreach($providers as $provider)
+                {
+                  $user = \App\User::find($provider->userId);
+                  if($user != null)
+                  {
+                    $NoofJobs = Instant_schedule_job::where('provider_id' , $user->id)->where('status' , '1')->get();
+                    if(count($NoofJobs) > 0)
+                    {
+                      $user->NoOfJobsCompleted= count($NoofJobs)." Jobs Done "; 
+                      foreach($NoofJobs as $job):
+                        $distances = \App\InstantBooking::find($job->job_id);
+                        $formattedAddrFrom = $provider->address;
+                        $formattedAddrTo=$distances->customer_address;
+ 
+                        $geocodeFrom = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddrFrom.'&sensor=false&key='.$apiKey);
+                          $outputFrom = json_decode($geocodeFrom);
+                          if(!empty($outputFrom->error_message))
+                          {
+                            return $outputFrom->error_message;
+                          }
+                          $geocodeTo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddrTo.'&sensor=false&key='.$apiKey);
+                          $outputTo = json_decode($geocodeTo);
+                          if(!empty($outputTo->error_message))
+                          {
+                            return $outputTo->error_message;
+                          }
+                          $latitudeFrom    = $outputFrom->results[0]->geometry->location->lat;
+                          $longitudeFrom    = $outputFrom->results[0]->geometry->location->lng;
+                          $latitudeTo        = $outputTo->results[0]->geometry->location->lat;
+                          $longitudeTo    = $outputTo->results[0]->geometry->location->lng;
+                          $theta    = $longitudeFrom - $longitudeTo;
+                          $dist    = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) +  cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
+                          $dist    = acos($dist);
+                          $dist    = rad2deg($dist);
+                          $miles    = $dist * 60 * 1.1515;
+                          $unit = strtoupper("KM");
+                          $user->distance = round($miles * 1.609344, 2).' km';
+ 
+                      endforeach;
+                    }
+                    else
+                    {
+                      $user->NoOfJobsCompleted= "No Completed jobs";
+                      $user->distance = "0 km";
+                    }
+                    $review = ProviderReview::where('provider_id', $user->id)->get();     
+                    $totalreview = count($review);
+                    if($totalreview > 0)
+                    {
+                      $totalrateing = collect($review)->sum('review');
+                      $user->AverageRating = ($totalrateing / $totalreview);
+                      $score = 50-(1*10)+(10+$user->AverageRating);
+                      $user->score = $score;    
+                    }
+                    else
+                    {
+                      $user->AverageRating = 0;
+                      $user->score = 0; 
+                    }
+
+                    array_push($nearby,$user);
+                  }
+                }
+              }
+            }
+          }
+          
+        }
+        $providers = \App\Useraddress::where('zipCode',$zipcode_id->id)->get();
+        if(count($providers)>0)
+        {
+          foreach($providers as $provider)
+          {
+            $user = \App\User::find($provider->userId);
+            if($user != null)
+            {
+              $NoofJobs = Instant_schedule_job::where('provider_id' , $user->id)->where('status' , '1')->get();
+              if(count($NoofJobs) > 0)
+              {
+                $user->NoOfJobsCompleted= count($NoofJobs)." Jobs Done "; 
+                foreach($NoofJobs as $job):
+                  $distances = \App\InstantBooking::find($job->job_id);
+                  $formattedAddrFrom = $provider->address;
+                  $formattedAddrTo=$distances->customer_address;
+
+                  $geocodeFrom = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddrFrom.'&sensor=false&key='.$apiKey);
+                    $outputFrom = json_decode($geocodeFrom);
+                    if(!empty($outputFrom->error_message))
+                    {
+                      return $outputFrom->error_message;
+                    }
+                    $geocodeTo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddrTo.'&sensor=false&key='.$apiKey);
+                    $outputTo = json_decode($geocodeTo);
+                    if(!empty($outputTo->error_message))
+                    {
+                      return $outputTo->error_message;
+                    }
+                    $latitudeFrom    = $outputFrom->results[0]->geometry->location->lat;
+                    $longitudeFrom    = $outputFrom->results[0]->geometry->location->lng;
+                    $latitudeTo        = $outputTo->results[0]->geometry->location->lat;
+                    $longitudeTo    = $outputTo->results[0]->geometry->location->lng;
+                    $theta    = $longitudeFrom - $longitudeTo;
+                    $dist    = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) +  cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
+                    $dist    = acos($dist);
+                    $dist    = rad2deg($dist);
+                    $miles    = $dist * 60 * 1.1515;
+                    $unit = strtoupper("KM");
+                    $user->distance = round($miles * 1.609344, 2).' km';
+
+                endforeach;
+              }
+              else
+              {
+                $user->NoOfJobsCompleted= "No Completed jobs";
+                $user->distance = "0 km";
+              }
+
+              $review = ProviderReview::where('provider_id', $user->id)->get();     
+              $totalreview = count($review);
+              if($totalreview > 0)
+              {
+                $totalrateing = collect($review)->sum('review');
+                $user->AverageRating = ($totalrateing / $totalreview);
+                $score = 50-(1*10)+(10+$user->AverageRating);
+                $user->score = $score;     
+              }
+              else
+              {
+                $user->AverageRating = 0;
+                $user->score = 0;    
+              }
+              if($user->working_status == 1)
+              {
+                array_push($active_users,$user);
+              }
+              if($user->working_status == 0)
+              {
+                array_push($unaviable_users,$user);
+              }
+            }
+          }
+        }
+        
+      }
+      $view = view('admin.InstantBooking.get_provider_list',compact('active_users','unaviable_users','nearby','data'));
+      return $view;
+    }
 } 

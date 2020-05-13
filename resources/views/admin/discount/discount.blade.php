@@ -242,7 +242,7 @@ $(".discountStatus").on("change", function(){
                     " _token": "{{ csrf_token() }}",
                                         
                     },
-            url: '{{route('updateDiscountStatus')}}',
+            url: '{{secure_url('serviceadmin/discount-status')}}',
             success: function (response) 
             {
 	            if(response == "success")

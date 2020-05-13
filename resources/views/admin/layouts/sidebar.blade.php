@@ -42,6 +42,7 @@
           <li><a href="{{route('viewAllCustomerCanceledJobs')}}" class="menu-item"><i class="fa fa-calendar-times-o"></i><span data-i18n="" class="menu-title">Customer Canceled Jobs</span></a></li>
           <li><a href="{{route('ForgotCheckout')}}" class="menu-item"><i class="icon-speech"></i><span data-i18n="" class="menu-title">Forgot Provider Checkout</span></a></li>
           <li><a href="{{route('get_completed_jobs_by_city')}}" class="menu-item"><i class="icon-speech"></i><span data-i18n="" class="menu-title">Job Completed By City</span></a></li>
+          <li><a href="{{route('unfilled_jobs')}}" class="menu-item"><i class="icon-speech"></i><span data-i18n="" class="menu-title">Unfilled Jobs</span></a></li>
         </ul>
       </li> 
       <li class="nav-item"><a href=""><i class="fa fa-braille"></i><span data-i18n="" class="menu-title">Scheduled Booking</span></a>
@@ -84,6 +85,7 @@
       <li class="nav-item"><a href=""><i class="icon-grid"></i><span data-i18n="" class="menu-title">Promo</span></a>
         <ul class="menu-content">
             <li><a href="{{route('promo.index')}}" class="menu-item"><i class="icon-grid"></i><span data-i18n="" class="menu-title">Promo</span></a></li>
+            <li><a href="{{route('applied_coupon')}}" class="menu-item"><i class="icon-grid"></i><span data-i18n="" class="menu-title">Applied Coupon</span></a></li>
         </ul>
       </li>
       <li class="nav-item"><a href=""><i class="fa fa-bell"></i><span data-i18n="" class="menu-title">Notification</span></a>
@@ -92,6 +94,7 @@
           <li title="Send Notification to Worker"><a href="{{route('worker_notification')}}" class="menu-item"><i class="fa fa-users"></i><span data-i18n="" class="menu-title">Send Notification to Worker</span></a></li>
         </ul>
       </li>
+      <li class="nav-item"><a href="{{route('chats')}}"><i class="fa fa-question-circle"></i><span data-i18n="" class="menu-title">Chat</span></a></li>
       <li class="nav-item"><a href="{{route('role')}}"><i class="fa fa-question-circle"></i><span data-i18n="" class="menu-title">FAQ</span></a>
         <ul class="menu-content">
             <li><a href="{{route('provider_faq')}}" class="menu-item"><i class="fa fa-question-circle"></i><span data-i18n="" class="menu-title">Provider FAQ</span></a></li>

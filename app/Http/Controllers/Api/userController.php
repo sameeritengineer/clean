@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -86,11 +87,11 @@ class userController extends Controller
                 $remember_token         = \Hash::make(uniqid());
                 $users                  = new User;
                 $users->first_name      = $input['first_name'];
-                $users->last_name       = $input['last_name'];
+                $users->last_name       = $input['last_name'] ?? "";
                 $users->email           = $input['email'];
                 $users->password        = Hash::make($input['password']);
                 $users->mobile          = $input['mobile'];
-                $users->ipaddress       = $request->ip();
+                //$users->ipaddress       = $request->ip();
                 $users->device_id       = $input['device_id'];
                 $users->device_type     = $input['device_type'];
                 $users->working_status  = 0;
@@ -648,6 +649,63 @@ class userController extends Controller
         else
         {
             return response()->json(['status'=>false,'message'=>'Something error,while sharing your location.']);
+        }
+    }
+
+public function save_chat(Request $request)
+    {
+        $input = $request->all();
+        $rules = array(
+            'user_id'      => 'required',
+            'provider_id'   => 'required',
+            'message' => 'required',
+'type'=>'required'
+         );
+        $validator = Validator::make($input, $rules);
+        if($validator->fails()) 
+        {
+            return Response::json(['isSuccess' => false, 'isError' => true, 'message' => $validator->errors()->first()]);
+        }
+        else
+        {
+            $chat = new \App\Chat;
+            $chat->user_id = $input['user_id'];
+            $chat->provider_id = $input['provider_id'];
+            $chat->message = $input['message'];
+$chat->type = $input['type'];
+            if($chat->save())
+            {
+                return response::json(['isSuccess' => true, 'isError' => false,'payload'=>$chat,'message'=>'message sent!.']);
+            }
+            else
+            {
+                return response::json(['isSuccess' => false, 'isError' => true,'message'=>'Something error while sending your message!.']); 
+            }
+        }
+    }
+public function get_all_chat_message(Request $request)
+    {
+        $input = $request->all();
+        $rules = array(
+            'user_id'      => 'required',
+            'provider_id'   => 'required',
+         );
+        $validator = Validator::make($input, $rules);
+        if($validator->fails()) 
+        {
+            return Response::json(['isSuccess' => false, 'isError' => true, 'message' => $validator->errors()->first()]);
+        }
+        else
+        {
+            $chats = \App\Chat::where('user_id',$input['user_id'])->where('provider_id',$input['provider_id'])->orderBy('id','desc')->get();
+            if(count($chats)>0)
+            {
+                return Response::json(['isSuccess' => true, 'isError' => false, 'message'=>'List of all chats.','payload'=>$chats]);
+            }
+            else
+            {
+                return Response::json(['isSuccess' => false, 'isError' => true, 'message'=>'Not Found!.']);
+            }
         }
     }
 }

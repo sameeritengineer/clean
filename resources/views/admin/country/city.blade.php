@@ -191,7 +191,7 @@
 <script type="text/javascript">
 function editCity(id)
 {
-  var url = "{{route('editCity')}}";
+  var url = "{{secure_url('serviceadmin/edit-city')}}";
   $.ajax
   ({
     type: "post",   
@@ -318,7 +318,7 @@ $('.country').change(function()
     $.ajax
     ({
       type:"GET",
-      url:"{{url('serviceadmin/get-state-list')}}?country_id="+countryID,
+      url:"{{secure_url('serviceadmin/get-state-list')}}?country_id="+countryID,
       success:function(res)
       {
         if(res)

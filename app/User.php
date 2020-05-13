@@ -33,8 +33,33 @@ class User extends Authenticatable
         return $this->belongsTo('App\Useraddress','id','userId');
     }
     
+    public function provider_profile()
+    {
+        return $this->hasOne('App\ProviderProfile');
+    }
+
+    public function provider_bio()
+    {
+        return $this->hasOne('App\Providerbio');
+    }
+
     public function provider_locations()
     {
         return $this->hasMany('App\ProviderLocation');
+    }
+
+    public function provider_reviews()
+    {
+        return $this->hasMany('App\ProviderReview','provider_id');
+    }
+
+    public function chats()
+    {
+        return $this->hasMany('App\Chat');
+    }
+
+    public function coupon_applieds()
+    {
+        return $this->hasMany('App\CouponApplied');
     }
 }

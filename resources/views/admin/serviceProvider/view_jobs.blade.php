@@ -108,7 +108,7 @@
   function show_comments_model(provider_id,job_id)
   {
     $('#show_comments_data').html('');
-    var url = "{{route('show_cmments')}}";
+    var url = "{{secure_url('serviceadmin/show_all_provider_comment')}}";
     $.ajax
     ({
       type:'post',

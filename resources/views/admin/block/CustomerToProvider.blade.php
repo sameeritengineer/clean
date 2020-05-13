@@ -1,4 +1,4 @@
-@extends('admin.layouts.index')
+﻿@extends('admin.layouts.index')
 @section('title','Block Provider')
 @section('content')
 <div class="app-content content container-fluid load">
@@ -143,7 +143,7 @@
 <script type="text/javascript">
 function unblockprovider(id)
 {
-  var url = "{{route('updateBlockStatus')}}";
+  var url = "{{secure_url('serviceadmin/UnBlock-Provider')}}";
   $.ajax
   ({
     type: "post",   

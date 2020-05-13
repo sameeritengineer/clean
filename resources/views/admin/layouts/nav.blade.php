@@ -31,7 +31,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right">             
               <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
-              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
+              <form id="logout-form" action="{{ route('logout') }}" method="get" style="display: none;">@csrf</form>
             </div>
           </li>
         </ul>
@@ -39,24 +39,23 @@
       <div class="panel panel-default mamberpanel">
         <div class="panel-heading c-list"><span class="title">Active User <i class="fa fa-times closeicon" aria-hidden="true"></i></span></div>
         <ul class="list-group contact-list-box">
-          <li class="list-group-item">
-            <div class="col-xs-12 col-sm-3">
-              <div class="user-img-lft">
-                <img src="http://api.randomuser.me/portraits/men/49.jpg" alt="Scott Stevens" class="img-responsive img-circle">
-                <div class="dot-ac color-online"></div>
+          @php $lists = \App\AdminSession::where('admin_id','!=',auth()->user()->id)->where('status','active')->get();@endphp
+          @if(count($lists)>0)
+            @foreach($lists as $list)
+            @php $user = \App\User::find($list->admin_id);@endphp
+            <li class="list-group-item">
+              <div class="col-xs-12 col-sm-3">
+                <div class="user-img-lft">
+                  <img src="{{asset('admin/app-assets/images/portrait/small/profile.jpg')}}"class="img-responsive img-circle">
+                  <div class="dot-ac color-online"></div>
+                </div>
               </div>
-            </div>
-            <div class="col-xs-12 col-sm-9"><h4 class="username">Scott Stevens</h4></div>
-          </li>
-          <li class="list-group-item">
-            <div class="col-xs-12 col-sm-3">
-              <div class="user-img-lft">
-                <img src="http://api.randomuser.me/portraits/men/49.jpg" alt="Scott Stevens" class="img-responsive img-circle">
-                <div class="dot-ac color-offline"></div>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-9"><h4 class="username">Scott Stevens</h4></div>
-          </li>
+              <div class="col-xs-12 col-sm-9"><h4 class="username">{{$user->first_name." ".$user->last_name}}</h4><p>{{$list->url}}</p></div>
+            </li>
+            @endforeach
+          @else
+            <li class="list-group-item"><div class="col-xs-12 col-sm-12">No active user found.</div></li>
+          @endif
         </ul>
       </div>
     </div>

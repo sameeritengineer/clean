@@ -15,4 +15,9 @@ class Country extends Model
     {
     	return $this->belongsTo('App\Useraddress');
     }
+
+    public function parent()
+	{
+	    return $this->belongsTo(Country::class);
+	}
 }

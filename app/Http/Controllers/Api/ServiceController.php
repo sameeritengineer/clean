@@ -1,7 +1,10 @@
 <?php
-namespace App\Http\Controllers\API;
+
+namespace App\Http\Controllers\Api;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use App\Service;
@@ -98,7 +101,8 @@ class ServiceController extends Controller
                 $servicetype->description = $spnish->description;
              }
              $baseUrl = URL::to('/');
-             $servicetype->image = $baseUrl.'/'.'normal_images/'.$servicetype->image;
+            // $servicetype->image = $baseUrl.'/'.'normal_images/'.$servicetype->image;
+$servicetype->image =secure_url("normal_images/".$servicetype->image);
           }
           if(count($servicetypes)>0)
           {
@@ -125,7 +129,7 @@ class ServiceController extends Controller
           $servicetype->description = $spnish->description;
         }
         $baseUrl = URL::to('/');
-        $servicetype->image = $baseUrl.'/'.'normal_images/'.$servicetype->image;
+        $servicetype->image =secure_url("normal_images/".$servicetype->image);
       }
       if(count($servicetypes)>0)
       {
@@ -366,7 +370,7 @@ class ServiceController extends Controller
         }
         else
         {
-           return response()->json(['isSuccess' => false, 'isError' => true, 'message' => "Sorry, we donâ€™t cover your area yet, but will let you know when we do!"]);
+           return response()->json(['isSuccess' => false, 'isError' => true, 'message' => "Sorry, we don’t cover your area yet, but will let you know when we do!"]);
         }
       }
       else
@@ -398,7 +402,7 @@ class ServiceController extends Controller
           $record = array(
             'provider_id' => $providerdetails->id,
             'provider_name' => $providerdetails->first_name,
-            'Profile_Pic'  => URL::to('/').'/'.'profile/'.$providerdetails->image,
+            'Profile_Pic'  => secure_url('profile/'.$providerdetails->image),
             'StartTime' => $provider_Bio->starttime,
             'EndTime' => $provider_Bio->endtime,
             'Bio' => $provider_Bio->Bio,
@@ -441,7 +445,7 @@ class ServiceController extends Controller
             $record = array(
               'provider_id' => $providerdetails->id,
               'provider_name' => $providerdetails->first_name,
-              'Profile_Pic'  => URL::to('/').'/'.'profile/'.$providerdetails->image,
+              'Profile_Pic'  => secure_url('profile/'.$providerdetails->image),
               'StartTime' => $provider_Bio->starttime,
               'EndTime' => $provider_Bio->endtime,
               'Bio' => $provider_Bio->Bio,
@@ -507,7 +511,8 @@ class ServiceController extends Controller
             $service_string = implode(' and ', $dataaaa);
          }
          $data->Services_names = $service_string;
-         $data->Provider_profile = URL::to('/').'/'.'profile/'.$data->Provider_profile;
+         //$data->Provider_profile = URL::to('/').'/'.'profile/'.$data->Provider_profile;
+$data->Provider_profile = secure_url("profile/".$data->Provider_profile);
       }
 
       if(count($current_jobs)> 0)
@@ -569,7 +574,7 @@ class ServiceController extends Controller
             $service_string = implode(' and ', $dataaaa);
          } 
          $data->Services_names = $service_string;
-         $data->Provider_profile = URL::to('/').'/'.'profile/'.$data->Provider_profile;
+         $data->Provider_profile = secure_url("profile/".$data->Provider_profile);
          $NoofJobs = Instant_schedule_job::where('provider_id' , $data->provider_id)->where('status' , '1')->get();
          $data->NoOfJobsCompleted= count($NoofJobs);    //Total No of jobs Completed
          $review = ProviderReview::where('provider_id', $data->provider_id)->get();
@@ -643,7 +648,7 @@ class ServiceController extends Controller
              $service_string = implode(' and ', $dataaaa);
            } 
            $data->Services_names = $service_string;
-           $data->Provider_profile = URL::to('/').'/'.'profile/'.$data->Provider_profile;
+           $data->Provider_profile = secure_url("profile/".$data->Provider_profile);
         }
 
         if(count($CanceledJobs)> 0)
@@ -879,7 +884,7 @@ class ServiceController extends Controller
              $service_string = implode(' and ', $dataaaa);
            }  
          $data->Services_names = $service_string;
-         $data->Provider_profile = URL::to('/').'/'.'profile/'.$data->Provider_profile;
+         $data->Provider_profile = secure_url("profile/".$data->Provider_profile);
          $review = ProviderReview::where('provider_id', $data->provider_id)->get();
          $totalreview  = count($review);      
         if($totalreview > 0)
@@ -1056,6 +1061,7 @@ class ServiceController extends Controller
                   ],
                 "data" => 
                   [ 
+			"notificationType" => "Rebooked Previous job",
                     "Service"      => $service_string,
                     "address"      => $previousdetails->customer_address.",zipcode ".$previousdetails->zipcode,
                     "Date"         => $input['date'] ,

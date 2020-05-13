@@ -10,4 +10,9 @@ class Promo extends Model
     {
     	return $this->belongsTo('App\Service');
     }
+
+    public function coupon_applieds()
+    {
+    	return $this->hasMany('App\CouponApplied');
+    }
 }

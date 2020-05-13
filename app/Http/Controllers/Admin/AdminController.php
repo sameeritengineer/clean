@@ -33,18 +33,19 @@ class AdminController extends Controller
         $users->email = $request->email;
         $users->password = Hash::make($request->password);
         $users->mobile = $request->mobile;
+        $users->status = 1;
+        $users->working_status = 0;
         if($users->save())
         {
-            $roles = new Role;
-            $roles->name = "admin";
-            if($roles->save())
+            $roles = Role::where('name','admin')->first();
+            if($roles != null)
             {
                 $userroles = new Userrole;
                 $userroles->user_id = $users->id;
                 $userroles->role_id = $roles->id;
                 if($userroles->save())
                 {
-                    return redirect('/admin/login');
+                    return redirect('/login');
                 }
                 else
                 {
