@@ -628,7 +628,7 @@ class InstantBookingCantroller extends Controller
 
     public function get_provider_zipcode(Request $request)
     {
-      $apiKey="AIzaSyBHAToEmuatZIY6t8avPSYNtZvUqSbcRmQ";
+      //$apiKey="AIzaSyBHAToEmuatZIY6t8avPSYNtZvUqSbcRmQ";
       $data = $request->data;
       $active_users = [];$unaviable_users = [];$nearby = [];
       $zipcode_id = \App\Zipcode::whereZipcode($request->data['zipcode'])->first();
