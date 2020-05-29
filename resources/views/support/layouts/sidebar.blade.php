@@ -14,6 +14,7 @@
       
       <li class="nav-item"><a href="{{route('support::chats')}}"><i class="fa fa-dashboard"></i><span data-i18n="" class="menu-title">Chat</span></a></li>
 
+      <li class="nav-item"><a href="{{route('support::providers')}}"><i class="fa fa-dashboard"></i><span data-i18n="" class="menu-title">Provider</span></a></li>
       <li class="nav-item"><a href="{{route('support::provider_check')}}"><i class="fa fa-dashboard"></i><span data-i18n="" class="menu-title">Provider Check In/Out</span></a></li>
 
       <li class="nav-item"><a href="{{route('support::users')}}"><i class="fa fa-flag"></i><span data-i18n="" class="menu-title">Add New Profile</span></a>

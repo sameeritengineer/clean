@@ -343,6 +343,13 @@ Route::group(['namespace' => 'manager', 'as' => 'manager::', 'prefix' => 'manage
 		Route::get('assign_a_job','JobController@OpenOpportunity')->name('assign_a_job');
 		Route::get('assign_a_job/{id}','JobController@show_opportunity')->name('show_opportunity');
 		Route::post('send_notofication_to_provider','JobController@SendNotificationToProvider')->name('provider_notification');
+		Route::get('show-user-{id}','JobController@showUser')->name('showUser');
+		Route::get('providers','JobController@providers')->name('providers');
+		Route::post('view-full-provider-profile','JobController@viewfullprofiledetails')->name('viewfullprofiledetails');
+		Route::post('get-servicetype-list','JobController@getServicetype')->name('getServicetype');
+		Route::get('show-service-provider-jobs-{id}','JobController@view_jobs')->name('view_jobs');
+		Route::post('admin_comments','JobController@admin_comments')->name('admin_comments');
+		Route::post('show_all_provider_comment','JobController@show_cmments')->name('show_cmments');
 
 	});
 });
@@ -441,5 +448,18 @@ Route::group(['namespace' => 'Support', 'as' => 'support::', 'prefix' => 'suppor
 		Route::get('assign_a_job','WorkerController@OpenOpportunity')->name('assign_a_job');
 		Route::get('assign_a_job/{id}','WorkerController@show_opportunity')->name('show_opportunity');
 		Route::post('send_notofication_to_provider','WorkerController@SendNotificationToProvider')->name('provider_notification');
+		Route::get('show-user-{id}','WorkerController@showUser')->name('showUser');
+		Route::get('providers','WorkerController@providers')->name('providers');
+		Route::post('view-full-provider-profile','WorkerController@viewfullprofiledetails')->name('viewfullprofiledetails');
+		Route::post('get-servicetype-list','WorkerController@getServicetype')->name('getServicetype');
+		Route::get('show-service-provider-jobs-{id}','WorkerController@view_jobs')->name('view_jobs');
+		Route::post('admin_comments','WorkerController@admin_comments')->name('admin_comments');
+		Route::post('show_all_provider_comment','WorkerController@show_cmments')->name('show_cmments');
+		// Route::post('destroy-service-provider','Admin\ServiceproviderController@destroyServiceProvider')->name('destroyServiceProvider');
+		// Route::get('edit-service-provider/{id}','Admin\ServiceproviderController@editServiceProvider')->name('editServiceProvider');
+		// Route::post('update-service-provider','Admin\ServiceproviderController@updateServiceProvider')->name('updateServiceProvider');
+		// Route::post('get-servicetype-list','Admin\ServiceproviderController@getServicetype')->name('getServicetype');
+		// Route::post('updateWorkingStatus','Admin\ServiceproviderController@updateWorkingStatus')->name('updateWorkingStatus');
+		// Route::post('updateUserStatus','Admin\UserController@updateStatus')->name('updateUserStatus');
 	});
 });

@@ -1,4 +1,4 @@
-@extends('support.layouts.index')
+@extends('manager.layouts.index')
 @section('title','Service Providers')
 @section('content')
 <div class="app-content content container-fluid">
@@ -53,11 +53,11 @@
                           <th>Service</th>
                           <th>Jobs Completed</th>
                           <th>Average Rating</th>
-                          <th>Working Status</th>
+                          <!-- <th>Working Status</th> -->
                           <th>View Jobs</th>
-                          <th>View</th>
+                          <!-- <th>View</th>
                           <th>Edit</th>
-                          <th>Delete</th>
+                          <th>Delete</th> -->
                         </tr>
                       </thead>
                       <tbody>
@@ -101,7 +101,7 @@
                             </ul>
                              @endif
                           </td>
-                          @if($serviceprovider->working_status == 0)     
+                         <!--  @if($serviceprovider->working_status == 0)     
                           <td>
                           <label class="switch"><input type="checkbox" data-id="{{$serviceprovider->id}}" data-site="gratis" class="switchery workingStatus" value="{{$serviceprovider->working_status}}" ><span class="slider round"></span></label>
                           </td>
@@ -109,12 +109,12 @@
                           <td>
                           <label class="switch"><input type="checkbox" data-id="{{$serviceprovider->id}}" data-site="gratis" class="switchery workingStatus" value="{{$serviceprovider->working_status}}" checked><span class="slider round"></span></label>
                           </td>
-                          @endif
+                          @endif -->
                           <!-- <td><button type="button" class="btn btn-icon btn-primary" data-id="" data-url="" onclick="viewproviderprofile({{$serviceprovider->id}});"data-toggle="modal" data-target="#default"><i class="fa fa-eye"></i></button></td> -->
-                          <td><a href="{{route('support::view_jobs',['id'=>$serviceprovider->id])}}"><button type="button" class="btn btn-icon btn-primary"><i class="fa fa-eye"></i> View Jobs</button></a></td>
-                          <td><a href="{{route('showServiceProvider',['id'=>$serviceprovider->id])}}"><button type="button" class="btn btn-icon btn-primary"><i class="fa fa-eye"></i></button></a></td>
+                          <td><a href="{{route('manager::view_jobs',['id'=>$serviceprovider->id])}}"><button type="button" class="btn btn-icon btn-primary"><i class="fa fa-eye"></i> View Jobs</button></a></td>
+                          <!-- <td><a href="{{route('showServiceProvider',['id'=>$serviceprovider->id])}}"><button type="button" class="btn btn-icon btn-primary"><i class="fa fa-eye"></i></button></a></td>
                           <td><a href="{{route('editServiceProvider',['id'=>$serviceprovider->id])}}"><button type="button" class="btn btn-icon btn-primary"><i class="ft-edit"></i></button></a></td>
-                          <td><button type="button" class="btn btn-icon btn-primary" data-id="" data-url=""  onclick="deleteConfirm({{$serviceprovider->id}},'{{route('destroyServiceProvider')}}');" data-toggle="modal" data-target="#default"><i class="ft-trash"></i></button></td> 
+                          <td><button type="button" class="btn btn-icon btn-primary" data-id="" data-url=""  onclick="deleteConfirm({{$serviceprovider->id}},'{{route('destroyServiceProvider')}}');" data-toggle="modal" data-target="#default"><i class="ft-trash"></i></button></td>  -->
                         </tr>
                         @endforeach
                       </tbody>
@@ -240,7 +240,7 @@
 <script>
 function viewproviderprofile(id)
 {
-  var url = "{{secure_url('serviceadmin/view-full-provider-profile')}}";
+  var url = "{{secure_url('manager/view-full-provider-profile')}}";
   $.ajax
   ({
     type: "post",   
@@ -276,7 +276,7 @@ function deleteServiceprovider()
   ({
     type: 'POST',
     data: {"id":id," _token": "{{ csrf_token() }}",},
-    url: "{{secure_url('serviceadmin/destroy-service-provider')}}",
+    url: "{{secure_url('manager/destroy-service-provider')}}",
     success: function (response)
     {
       if(response == "success")
@@ -305,7 +305,7 @@ $(".workingStatus").on("change", function(){
                     " _token": "{{ csrf_token() }}",
                                         
                     },
-            url: '{{secure_url('serviceadmin/Update-WorkingDay-Status')}}',
+            url: '{{secure_url('manager/Update-WorkingDay-Status')}}',
             success: function (response) {
                 if(response == "success"){
                 if(value == 0){

@@ -1,4 +1,4 @@
-@extends('support.layouts.index')
+@extends('manager.layouts.index')
 @section('title',' User')
 @section('content')
 <div class="app-content content container-fluid">
@@ -14,7 +14,7 @@
             <div class="col-xs-12">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title"><a href="{{route('support::users.create')}}" class="btn btn-info">Add New Profile</a></h4>
+                  <h4 class="card-title"><a href="{{route('manager::users.create')}}" class="btn btn-info">Add New Profile</a></h4>
                   <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                   <div class="heading-elements"></div>
                 </div>
@@ -58,7 +58,7 @@
                           <td>{{$user->user_address->city_name->name ?? ""}}</td>
                           <td>{{$user->user_address->zipcode_name->zipcode ?? ""}}</td>
                           <td>{{$user->created_at->format('d M Y')}}</td>
-                          <td><a href="{{route('support::showUser',['id'=>$user->id])}}"><button type="button" class="btn btn-icon btn-primary"><i class="fa fa-eye"></i></button></a></td>
+                          <td><a href="{{route('manager::showUser',['id'=>$user->id])}}"><button type="button" class="btn btn-icon btn-primary"><i class="fa fa-eye"></i></button></a></td>
                         </tr>
                          @endforeach
                       </tbody>

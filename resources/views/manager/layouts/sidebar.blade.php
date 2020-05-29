@@ -2,7 +2,7 @@
   <div class="main-menu-content">
     <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
       <li class="nav-item"><a href="{{route('manager::dashboard')}}"><i class="fa fa-dashboard"></i><span data-i18n="" class="menu-title">Dashboard</span></a></li>
-      
+      <li class="nav-item"><a href="{{route('manager::providers')}}"><i class="fa fa-dashboard"></i><span data-i18n="" class="menu-title">Provider</span></a></li>
       <li class="nav-item"><a href="{{route('manager::block_list')}}"><i class="fa fa-dashboard"></i><span data-i18n="" class="menu-title">Suspend Customer/Provider</span></a></li>
 
       <li class="nav-item"><a href=""><i class="fa fa-calendar-check-o"></i><span data-i18n="" class="menu-title">Instant Booking</span></a>
@@ -43,6 +43,7 @@
       <li class="nav-item"><a href="{{route('manager::chats')}}"><i class="fa fa-dashboard"></i><span data-i18n="" class="menu-title">Chat</span></a></li>
 
       <li class="nav-item"><a href="{{route('manager::provider_check')}}"><i class="fa fa-dashboard"></i><span data-i18n="" class="menu-title">Provider Check In/Out</span></a></li>
+
 
     </ul>
   </div>

@@ -90,4 +90,15 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function logout()
+    {
+        $session = \DB::table('admin_sessions')->where('admin_id',auth()->user()->id)->first();
+        if(!is_null($session)):
+            $session->status = 'inactive';
+            $session->update();
+        endif;
+        Auth::logout();
+        return redirect()->route('login');
+    }
 }

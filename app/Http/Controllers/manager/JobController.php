@@ -850,11 +850,12 @@ class JobController extends Controller
 
   public function users()
   {
-    $users = \App\User::join('user_roles','users.id','=','user_roles.user_id')
-    ->join('roles','roles.id','=','user_roles.role_id')
-    ->whereHas('roles', function ($query){ $query->where('name','!=','admin'); })
-    ->orderBy('users.id','desc')->get();
+    // $users = \App\User::join('user_roles','users.id','=','user_roles.user_id')
+    // ->join('roles','roles.id','=','user_roles.role_id')
+    // ->whereHas('roles', function ($query){ $query->where('name','!=','admin'); })
+    // ->orderBy('users.id','desc')->get();
       //return $users;
+    $users = \App\User::whereHas('roles',function($q){ $q->where('name','customer'); })->get();
     return view('manager.users.index',compact('users'));
   }
 
@@ -1092,5 +1093,125 @@ class JobController extends Controller
           }
       }
       return response()->json(['status'=>'1','url'=>route('manager::assign_a_job')]);  
+  }
+
+
+  public function providers()
+  {
+    $role_id = \App\Role::where('name','provider')->first();
+    $allserviceproviders = \App\Userrole::where('role_id', $role_id->id)->join('users','users.id','=','user_roles.user_id')->where('status','1')->orderBy('users.id','desc')->get();
+    foreach($allserviceproviders as $data)
+    {
+      $NoofJobs = \App\Instant_schedule_job::where('provider_id' , $data->id)->where('status' , '1')->get();
+      if(count($NoofJobs) > 0)
+      {
+        $data->NoOfJobsCompleted= count($NoofJobs)." Jobs Done ";    //Total No of jobs Completed      
+      }
+      else
+      {
+        $data->NoOfJobsCompleted= "No Completed jobs";
+      }
+      $review = \App\ProviderReview::where('provider_id', $data->id)->get();
+      $totalreview  = count($review);      
+      if($totalreview > 0)
+      {
+        $totalrateing = collect($review)->sum('review');
+        $data->AverageRating = ($totalrateing / $totalreview);     //Average rating         
+      }
+      else
+      {
+        $data->AverageRating = 0;
+      }
+    }
+    //return $allserviceproviders;
+    return view('manager.provider.index',compact('allserviceproviders'));
+  }
+
+
+  public function view_jobs($id)
+  {
+    $jobs = \App\Instant_schedule_job::join('instant_bookings','instant_schedule_jobs.job_id','=','instant_bookings.id')
+    ->select('instant_schedule_jobs.*','instant_schedule_jobs.id as instant_schedule_jobs_id','instant_bookings.*')
+    ->where('provider_id' , $id)
+    ->get();
+    return view('manager.provider.view_jobs',compact('jobs'));
+  }
+
+  public function show_cmments(Request $request)
+    {
+      $comments = \App\AdminComment::where('user_id',$request->user_id)->where('job_id',$request->job_id)->pluck('comments');
+      if(count($comments)>0)
+      {
+        foreach($comments as $comment)
+        {
+          $comment_data[] = "<p>".$comment."</p>"; 
+        }
+      }
+      else
+      {
+        $comment_data[] = "<p>No Comment</p>"; 
+      }
+      return $comment_data;
+    }
+
+    public function admin_comments(Request $request)
+    {
+      try
+      {
+        $comment =  new \App\AdminComment;
+        $comment->job_id = $request->job_id ?? Null;
+        $comment->user_id = $request->user_id;
+        $comment->comments = $request->comments;
+        if($comment->save())
+        {
+          return response()->json(['status'=>true,'message'=>'Admin added comment.']);
+        }
+        else
+        {
+          return response()->json(['status'=>false,'message'=>'Try Again.']);
+        }
+      }
+      catch(\Exception $e)
+      {
+        return response()->json(['status'=>false,'message'=>$e->getMessage()]);
+      }
+    }
+
+    public function showUser($id)
+  {
+    $user = \App\User::whereHas('roles',function($q){ $q->where('name','customer'); })->find($id);
+    $NoofJobs = \App\Instant_schedule_job::where('provider_id' , $id)->where('status' , '1')->get();
+    if(count($NoofJobs) > 0)
+    {
+      $user->NoOfJobsCompleted= count($NoofJobs)." Jobs Done "; 
+    }
+    else
+    {
+      $user->NoOfJobsCompleted= "No Completed jobs";
+    }
+    $review = \App\ProviderReview::where('provider_id', $id)->get();
+    $totalreview  = count($review);      
+    if($totalreview > 0)
+    {
+      $totalrateing = collect($review)->sum('review');
+      $user->AverageRating = ($totalrateing / $totalreview);
+    }
+    else
+    {
+      $user->AverageRating = 0;
+    }
+    $comments = \App\AdminComment::where('user_id',$id)->get();
+    if(count($comments)>0)
+    {
+      $user->comments = $comments;
+    }
+    else
+    {
+      $user->comments = array();
+    }
+    $services = \App\Service::where('id',$user->services)->value('name');
+    $user->services = $services;
+
+    return view('manager.users.showuser',compact('user'));
   }
 }
