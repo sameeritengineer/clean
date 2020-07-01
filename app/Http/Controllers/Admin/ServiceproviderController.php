@@ -446,7 +446,6 @@ class ServiceproviderController extends Controller
     public function updatebioStatus(Request $request)
     {
         $user = Providerbio::find($request->id);
-        return $user;
         $useremail = User::find($user->serviceprovider_id);
         $provider_bio = Approved_Bio::where('serviceprovider_id',$user->serviceprovider_id)->first();
         if($provider_bio != null)
@@ -458,12 +457,12 @@ class ServiceproviderController extends Controller
           if($provider_bio->update())
           {  
            $data = array('email' => $useremail->email);
-            Mail::send('approvel.providerbioapprovel',$data, function($message) use ($data)
-            {
-                $message->from(config('mail.username'));
-                $message->to($data['email']);
-                $message->subject('Email Verification');
-            });
+            // Mail::send('approvel.providerbioapprovel',$data, function($message) use ($data)
+            // {
+            //     $message->from(config('mail.username'));
+            //     $message->to($data['email']);
+            //     $message->subject('Email Verification');
+            // });
               if($user != null)
               {    
                   $user->delete();
@@ -490,12 +489,12 @@ class ServiceproviderController extends Controller
           if($provider_bio->save())
           { 
             $data = array('email' => $useremail->email);
-            Mail::send('approvel.sendUsernamePassword',$data, function($message) use ($data)
-            {
-                $message->from(config('mail.username'));
-                $message->to($data['email']);
-                $message->subject('Email Verification');
-            });
+            // Mail::send('approvel.sendUsernamePassword',$data, function($message) use ($data)
+            // {
+            //     $message->from(config('mail.username'));
+            //     $message->to($data['email']);
+            //     $message->subject('Email Verification');
+            // });
             if($user != null)
             {    
                 $user->delete();
