@@ -445,8 +445,8 @@ class ServiceproviderController extends Controller
 
     public function updatebioStatus(Request $request)
     {
-      return $request->all();
         $user = Providerbio::find($request->id);
+        return $user;
         $useremail = User::find($user->serviceprovider_id);
         $provider_bio = Approved_Bio::where('serviceprovider_id',$user->serviceprovider_id)->first();
         if($provider_bio != null)
