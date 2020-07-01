@@ -397,12 +397,12 @@ class ServiceproviderController extends Controller
       if($updateimg->update())
         {
           $data = array('email' => $updateimg->email);
-          Mail::send('approvel.providerprofileapprovel',$data, function($message) use ($data)
-          {
-              $message->from(config('mail.username'));
-              $message->to($data['email']);
-              $message->subject('Email Verification');
-          });
+          // Mail::send('approvel.providerprofileapprovel',$data, function($message) use ($data)
+          // {
+          //     $message->from(config('mail.username'));
+          //     $message->to($data['email']);
+          //     $message->subject('Email Verification');
+          // });
           if($user != null)
           {    
               $user->delete();
@@ -457,12 +457,12 @@ class ServiceproviderController extends Controller
           if($provider_bio->update())
           {  
            $data = array('email' => $useremail->email);
-            Mail::send('approvel.providerbioapprovel',$data, function($message) use ($data)
-            {
-                $message->from(config('mail.username'));
-                $message->to($data['email']);
-                $message->subject('Email Verification');
-            });
+            // Mail::send('approvel.providerbioapprovel',$data, function($message) use ($data)
+            // {
+            //     $message->from(config('mail.username'));
+            //     $message->to($data['email']);
+            //     $message->subject('Email Verification');
+            // });
               if($user != null)
               {    
                   $user->delete();
@@ -489,12 +489,12 @@ class ServiceproviderController extends Controller
           if($provider_bio->save())
           { 
             $data = array('email' => $useremail->email);
-            Mail::send('approvel.sendUsernamePassword',$data, function($message) use ($data)
-            {
-                $message->from(config('mail.username'));
-                $message->to($data['email']);
-                $message->subject('Email Verification');
-            });
+            // Mail::send('approvel.sendUsernamePassword',$data, function($message) use ($data)
+            // {
+            //     $message->from(config('mail.username'));
+            //     $message->to($data['email']);
+            //     $message->subject('Email Verification');
+            // });
             if($user != null)
             {    
                 $user->delete();
