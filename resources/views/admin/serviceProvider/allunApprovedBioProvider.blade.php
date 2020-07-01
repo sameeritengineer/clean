@@ -180,15 +180,16 @@ console.log('hello')
 
 function updatebioStatus(id)
 {
+  console.log(id)
     $('#domMessage').show();
     $.ajax
     ({
       type: 'POST',
       data: {"id":id," _token": "{{ csrf_token() }}",},
-      url: "{{url('serviceadmin/updatebioStatus')}}",
+      url: "{{secure_url('serviceadmin/updatebioStatus')}}",
       success: function (response)
       {
-console.log(response);
+        console.log(response);
         if(response == 1)
         {                                       
           $('#unapprovedprovider'+id).remove();
