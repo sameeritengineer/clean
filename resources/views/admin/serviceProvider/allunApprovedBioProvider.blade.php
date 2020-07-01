@@ -186,7 +186,7 @@ function updatebioStatus(id)
     ({
       type: 'POST',
       data: {"id":id," _token": "{{ csrf_token() }}",},
-      url: "{{secure_url('serviceadmin/updatebioStatus')}}",
+      url: "{{route('updatebioStatus')}}",
       success: function (response)
       {
         console.log(response);
