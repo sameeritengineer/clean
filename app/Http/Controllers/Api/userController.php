@@ -72,7 +72,9 @@ class userController extends Controller
                     'address'    => 'required',
                     'state'      => 'required',
                     'city'       => 'required',
-                    'zipCode'    => 'required',    
+                    'zipCode'    => 'required',
+                    'lat' => 'required',  
+                    'long' =>'required' 
                 );
         $validator = Validator::make($input, $rules);
         if ($validator->fails()) 
@@ -120,7 +122,8 @@ class userController extends Controller
                         $userAddress->state = $input['state'];
                         $userAddress->city = $input['city'];
                         $userAddress->zipCode = $input['zipCode'];
-
+                        $userAddress->lat = $input['lat'];
+                        $userAddress->long = $input['long'];
                         if($userAddress->save())
                         {
                          $record = array('user_id' => $users->id, 'access_token' => $remember_token);
@@ -546,6 +549,8 @@ class userController extends Controller
           'state'      => 'required',
           'city'       => 'required',
           'zipCode'    => 'required',
+          'lat' => 'required',
+          'long' => 'required',
       );
       $validator = Validator::make($input, $rules);
 
@@ -568,7 +573,8 @@ class userController extends Controller
                 $userAddress->state = $input['state'];
                 $userAddress->city = $input['city'];
                 $userAddress->zipCode = $input['zipCode'];
-
+                $userAddress->lat = $input['lat'];
+                $userAddress->long = $input['long'];
                 if($userAddress->update())
                 {
                 $record = array('user_id' => $user->id,);   
@@ -683,7 +689,7 @@ $chat->type = $input['type'];
             }
         }
     }
-public function get_all_chat_message(Request $request)
+    public function get_all_chat_message(Request $request)
     {
         $input = $request->all();
         $rules = array(

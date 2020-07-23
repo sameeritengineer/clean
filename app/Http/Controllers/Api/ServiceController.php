@@ -250,6 +250,8 @@ $servicetype->image =secure_url("normal_images/".$servicetype->image);
                   $insertbookingdetails->cutomer_id       = $input['id'];
                   $insertbookingdetails->zipcode          = $input['zipcode'];
                   $insertbookingdetails->customer_address = $input['address'];
+                  $insertbookingdetails->lat = $input['lat'];
+                  $insertbookingdetails->long = $input['long'];
                   $insertbookingdetails->date             = $input['date'];
                   $insertbookingdetails->time             = $input['time'];
                   $insertbookingdetails->Services         = $input['servicetypes'];
@@ -1103,6 +1105,8 @@ $data->Provider_profile = secure_url("profile/".$data->Provider_profile);
           $insertbookingdetails->date             = $input['date'];
           $insertbookingdetails->time             = $input['time'];
           $insertbookingdetails->Services         = $previousdetails->Services; 
+          $insertbookingdetails->lat         = $previousdetails->lat;
+          $insertbookingdetails->long         = $previousdetails->long;
           if($insertbookingdetails->save())
           {
               return Response::json(['isSuccess' => true, 'isError' => false, 'message' => "Rebooking Details Saved"]);
