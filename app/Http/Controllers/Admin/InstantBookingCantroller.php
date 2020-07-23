@@ -694,12 +694,12 @@ class InstantBookingCantroller extends Controller
                       $dist = rad2deg($dist);
                       $miles = $dist * 60 * 1.1515;
                       $distance = $miles * 1.609344;
-                      $user->distance = $distance." km";
+                      $user->distance = (int)$distance;
                     }
                     else
                     {
                       $user->NoOfJobsCompleted= "No Completed jobs";
-                      $user->distance = "0 km";
+                      $user->distance = "0";
                     }
                     $review = ProviderReview::where('provider_id', $user->id)->get();     
                     $totalreview = count($review);
@@ -776,12 +776,12 @@ class InstantBookingCantroller extends Controller
                 $dist = rad2deg($dist);
                 $miles = $dist * 60 * 1.1515;
                 $distance = $miles * 1.609344;
-                $user->distance = $distance." km";
+                $user->distance = (int)$distance;
               }
               else
               {
                 $user->NoOfJobsCompleted= "No Completed jobs";
-                $user->distance = "0 km";
+                $user->distance = "0";
               }
 
               $review = ProviderReview::where('provider_id', $user->id)->get();     

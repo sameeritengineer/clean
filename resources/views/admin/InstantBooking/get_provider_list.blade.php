@@ -117,7 +117,7 @@ h2.title-h2-un {
               </tbody>
             </table>
 
-            <h2 class="title-h2-un">Unavilable</h2>
+            <h2 class="title-h2-un">Unavailable</h2>
             <table class="table table-striped">
               <thead>
                 <tr>
