@@ -699,7 +699,7 @@ class InstantBookingCantroller extends Controller
                     else
                     {
                       $user->NoOfJobsCompleted= "No Completed jobs";
-                      //$user->distance = "0 km";
+                      $user->distance = "0 km";
                     }
                     $review = ProviderReview::where('provider_id', $user->id)->get();     
                     $totalreview = count($review);
@@ -781,7 +781,7 @@ class InstantBookingCantroller extends Controller
               else
               {
                 $user->NoOfJobsCompleted= "No Completed jobs";
-                //$user->distance = "0 km";
+                $user->distance = "0 km";
               }
 
               $review = ProviderReview::where('provider_id', $user->id)->get();     
