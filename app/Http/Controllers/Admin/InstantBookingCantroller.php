@@ -684,10 +684,10 @@ class InstantBookingCantroller extends Controller
                       //     $user->distance = round($miles * 1.609344, 2).' km';
  
                       // endforeach;
-                      $lat1 = "30.975254";
-                      $lat2 = "30.741482";
-                      $lon1 = "76.527328";
-                      $lon2 = "76.768066";
+                      $lat1 = "30.9661";
+                      $lat2 = "30.6942";
+                      $lon1 = "76.5231";
+                      $lon2 = "76.8606";
                       $theta = $lon1 - $lon2;
                       $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
                       $dist = acos($dist);
@@ -766,10 +766,10 @@ class InstantBookingCantroller extends Controller
                 //     $user->distance = round($miles * 1.609344, 2).' km';
 
                 // endforeach;
-                $lat1 = "30.975254";
-                $lat2 = "30.741482";
-                $lon1 = "76.527328";
-                $lon2 = "76.768066";
+                $lat1 = "30.9661";
+                $lat2 = "30.6942";
+                $lon1 = "76.5231";
+                $lon2 = "76.8606";
                 $theta = $lon1 - $lon2;
                 $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
                 $dist = acos($dist);
