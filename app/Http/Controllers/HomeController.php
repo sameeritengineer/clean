@@ -25,7 +25,7 @@ class HomeController extends Controller
     {
         if(auth()->user()->roles()->first()->name == "admin")
         {
-            return view('dashboard');
+            return view('home');
         }
         else if(auth()->user()->roles()->first()->name == "support")
         {
