@@ -684,17 +684,26 @@ class InstantBookingCantroller extends Controller
                       //     $user->distance = round($miles * 1.609344, 2).' km';
  
                       // endforeach;
-                      $lat1 = "30.9661";
-                      $lat2 = "30.6942";
-                      $lon1 = "76.5231";
-                      $lon2 = "76.8606";
-                      $theta = $lon1 - $lon2;
-                      $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
-                      $dist = acos($dist);
-                      $dist = rad2deg($dist);
-                      $miles = $dist * 60 * 1.1515;
-                      $distance = $miles * 1.609344;
-                      $user->distance = (int)$distance;
+                      if(!is_null($providers->lat) && !is_null($providers->long)):
+                        foreach($NoofJobs as $job):
+                          $get_lat_longs = \App\InstantBooking::find($job->job_id);
+                          if(!is_null($get_lat_longs)):
+                            $lat1 = $providers->lat;
+                            $lat2 = $get_lat_longs->lat;
+                            $lon1 = $providers->long;
+                            $lon2 = $get_lat_longs->long;
+                            $theta = $lon1 - $lon2;
+                            $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+                            $dist = acos($dist);
+                            $dist = rad2deg($dist);
+                            $miles = $dist * 60 * 1.1515;
+                            $distance = $miles * 1.609344;
+                            $user->distance = (int)$distance;
+                          endif;
+                        endforeach;
+                        else:
+                          $user->distance = 0;
+                      endif;
                     }
                     else
                     {
@@ -766,17 +775,38 @@ class InstantBookingCantroller extends Controller
                 //     $user->distance = round($miles * 1.609344, 2).' km';
 
                 // endforeach;
-                $lat1 = "30.9661";
-                $lat2 = "30.6942";
-                $lon1 = "76.5231";
-                $lon2 = "76.8606";
-                $theta = $lon1 - $lon2;
-                $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
-                $dist = acos($dist);
-                $dist = rad2deg($dist);
-                $miles = $dist * 60 * 1.1515;
-                $distance = $miles * 1.609344;
-                $user->distance = (int)$distance;
+                // $lat1 = "30.9661";
+                // $lat2 = "30.6942";
+                // $lon1 = "76.5231";
+                // $lon2 = "76.8606";
+                // $theta = $lon1 - $lon2;
+                // $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+                // $dist = acos($dist);
+                // $dist = rad2deg($dist);
+                // $miles = $dist * 60 * 1.1515;
+                // $distance = $miles * 1.609344;
+                // $user->distance = (int)$distance;
+
+                if(!is_null($providers->lat) && !is_null($providers->long)):
+                  foreach($NoofJobs as $job):
+                    $get_lat_longs = \App\InstantBooking::find($job->job_id);
+                    if(!is_null($get_lat_longs)):
+                      $lat1 = $providers->lat;
+                      $lat2 = $get_lat_longs->lat;
+                      $lon1 = $providers->long;
+                      $lon2 = $get_lat_longs->long;
+                      $theta = $lon1 - $lon2;
+                      $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+                      $dist = acos($dist);
+                      $dist = rad2deg($dist);
+                      $miles = $dist * 60 * 1.1515;
+                      $distance = $miles * 1.609344;
+                      $user->distance = (int)$distance;
+                    endif;
+                  endforeach;
+                  else:
+                    $user->distance = 0;
+                endif;
               }
               else
               {
