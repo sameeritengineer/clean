@@ -684,7 +684,7 @@ class InstantBookingCantroller extends Controller
                       //     $user->distance = round($miles * 1.609344, 2).' km';
  
                       // endforeach;
-                      if(!is_null($providers->lat) && !is_null($providers->long)):
+                      if(!is_null($provider->lat) && !is_null($provider->long)):
                         foreach($NoofJobs as $job):
                           $get_lat_longs = \App\InstantBooking::find($job->job_id);
                           if(!is_null($get_lat_longs)):
@@ -787,7 +787,7 @@ class InstantBookingCantroller extends Controller
                 // $distance = $miles * 1.609344;
                 // $user->distance = (int)$distance;
 
-                if(!is_null($providers->lat) && !is_null($providers->long)):
+                if(!is_null($provider->lat) && !is_null($provider->long)):
                   foreach($NoofJobs as $job):
                     $get_lat_longs = \App\InstantBooking::find($job->job_id);
                     if(!is_null($get_lat_longs)):
