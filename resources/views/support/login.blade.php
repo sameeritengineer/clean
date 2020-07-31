@@ -67,7 +67,7 @@
               </div>
               <div class="card-body collapse in">
                 <div class="card-block">
-                  <form class="form-horizontal" id="signinForm" action="{{ route('support::login') }}" method="post" novalidate>
+                  <form class="form-horizontal" id="signinForm" action="{{ route('login') }}" method="post" novalidate>
 					          @csrf
                     <div class="form-group">
                       <div class="controls">

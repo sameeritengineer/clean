@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use App\User;
-use App\Role;
-use App\Userrole;
+
 use Auth;
 class LoginController extends Controller
 {
@@ -30,57 +28,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/serviceadmin';
+    protected $redirectTo = '/home';
 
-    
-        //   public function authenticated()
-        // {
-
-        //      $role = Auth::user()->role;
-
-        //     if($role == 'Admin')
-        //     {
-        //      return redirect('/serviceadmin');
-
-        //     }
-
-        //     else
-        //     {
-
-        //         return redirect('admin.login');
-        //     } 
-
-        // }
-
-
-
-
-
-    // public function login(Request $request)
-    // {
-    //     //return $request->all();
-    //     $user = User::where('email',$request->email)->first();
-    //     if(count($user)>0)
-    //     {
-    //         $checkRoles = Userrole::where('user_id',$user->id)->first();
-    //         if(count($checkRoles)>0)
-    //         {
-    //             $role = Role::find($checkRoles->role_id);                
-    //             $data = $request->only('email','password');
-    //             $collection = collect($data);
-    //             $collection->put('role', $role->name);
-    //             $collection->all();
-    //             $credentials = ($collection);
-    //             if(Auth::login($credentials, true))
-    //             {
-    //                  // Authentication passed...
-    //                 return "login";
-    //                 // return redirect()->intended('admin/dashboard');
-    //             }
-    //         }
-    //     }
-    // }
-    
     /**
      * Create a new controller instance.
      *
@@ -95,8 +44,9 @@ class LoginController extends Controller
     {
         $session = \DB::table('admin_sessions')->where('admin_id',auth()->user()->id)->first();
         if(!is_null($session)):
-            $session->status = 'inactive';
-            $session->update();
+            $update = \App\AdminSession::find($session->id);
+            $update->status = 'inactive';
+            $update->save();
         endif;
         Auth::logout();
         return redirect()->route('login');

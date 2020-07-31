@@ -28,27 +28,16 @@ Route::get('Privacy_Policy','Frontend\FrontmainCantroller@privacypolicy')->name(
 Route::get('terms_conditions','Frontend\FrontmainCantroller@termsconditions')->name('termsconditions');
 Route::get('Blog','Frontend\FrontmainCantroller@blog')->name('blog');
 Route::get('unauthorized', function () { return view('unauthorized'); });
-
+Route::get('home','HomeController@index')->name('home');
 //--------------------Registration of Web users----------------------//
 
 Route::get('user/create','Frontend\FrontmainCantroller@create')->name('create');
 Route::post('user/create','Frontend\FrontmainCantroller@store');
-
-
-//-------------------------Login Web users----------------------//
-
 Route::get('Login','Frontend\FrontmainCantroller@Login')->name('Login');
-
-Route::get('stripe', 'StripePaymentController@stripe');
-Route::post('stripe', 'StripePaymentController@stripePost')->name('stripe.post');
-
 
 //-------------------------AdminPanel-----------------------------//
 
- 
-Route::get('admin_register','Admin\AdminController@register');
-Route::post('postRegister','Admin\AdminController@postRegister')->name('postRegister');
-Route::middleware(['admin','auth'])->group(function ()
+Route::middleware(['auth'])->group(function ()
 {
 	Route::get('logout', 'Auth\LoginController@logout');
 	Route::get('serviceadmin','Admin\PageController@dashboard')->name('dashboard');
@@ -421,7 +410,7 @@ Route::group(['namespace' => 'Support', 'as' => 'support::', 'prefix' => 'suppor
 	Route::match(['get','post'],'register','SupportController@register')->name('register');
 	Route::match(['get','post'],'login','SupportController@login')->name('login');
 	Route::post('logout','SupportController@logout')->name('logout');
-	Route::middleware(['support','auth'])->group(function ()
+	Route::middleware(['auth'])->group(function ()
 	{
 		Route::get('dashboard','WorkerController@dashboard')->name('dashboard');
 		Route::get('get-state-list','CountryController@getStateList');

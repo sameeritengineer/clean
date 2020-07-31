@@ -19,6 +19,7 @@ class CreateZipcodesTable extends Migration
             $table->integer('city_id')->nullable()->unsigned();            
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
             $table->char('zipcode')->unique();
+            $table->char('near_by')->nullable();
             $table->timestamps();
         });
     }

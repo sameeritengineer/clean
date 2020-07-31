@@ -364,10 +364,10 @@ class CountryController extends Controller
     public function editZipcode(Request $request)
     {
         $zipcodes = Zipcode::find($request->id);
-if($zipcodes->near_by != null)
-{
-	$zipcodes->near_by = explode(',',$zipcodes->near_by);
-}
+        if($zipcodes->near_by != null)
+        {
+        	$zipcodes->near_by = explode(',',$zipcodes->near_by);
+        }
         $cities = City::with('zipcodes')->find($zipcodes->city_id);
         $states = State::find($cities->state_id);        
         $zipcodes->countryId = $states->country_id;
