@@ -89,6 +89,8 @@ class providerController extends Controller
               'city'       => 'required',
               'zipCode'    => 'required',
               'service'    => 'required',
+              'lat'=>'required',
+              'long'=>'required'
           );
       $validator = Validator::make($input, $rules);
 
@@ -138,7 +140,8 @@ class providerController extends Controller
               $userAddress->state = $input['state'];
               $userAddress->city = $input['city'];
               $userAddress->zipCode = $input['zipCode'];
-
+              $userAddress->lat = $input['lat'];
+              $userAddress->long = $input['long'];
               if($userAddress->save())
               {
               $record = array('user_id' => $users->id, 'access_token' => $remember_token);   
@@ -562,6 +565,8 @@ class providerController extends Controller
         'city'       => 'required',
         'zipCode'    => 'required',
         'service'    => 'required',
+        'lat'=>'required',
+        'long'=>'required'
     );
     $validator = Validator::make($input, $rules);
 
@@ -586,7 +591,8 @@ class providerController extends Controller
                 $userAddress->state = $input['state'];
                 $userAddress->city = $input['city'];
                 $userAddress->zipCode = $input['zipCode'];
-
+                $userAddress->lat = $input['lat'];
+                $userAddress->long = $input['long'];
                 if($userAddress->update())
                 {
                 $record = array('user_id' => $user->id,);   
