@@ -1,4 +1,4 @@
-@extends('admin.layouts.index')
+@extends('manager.layouts.index')
 @section('title','Block Provider')
 @section('content')
 <div class="app-content content container-fluid load">

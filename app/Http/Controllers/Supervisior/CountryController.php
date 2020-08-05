@@ -18,7 +18,7 @@ class CountryController extends Controller
         $parent_countries = Country::where('parent_id',0)->get();
         $countries = Country::with('parent')->orderBy('id','desc')->get();
         //return $countries;
-        return view('admin.country.country',compact('countries','parent_countries'));
+        return view('supervisor.country.country',compact('countries','parent_countries'));
     }
 
     public function storeCountry(Request $request)
@@ -95,7 +95,7 @@ class CountryController extends Controller
     {
         $countries = Country::orderBy('id','desc')->get();
         $states = State::orderBy('id','desc')->get();
-        return view('admin.country.state',compact('states','countries'));
+        return view('supervisor.country.state',compact('states','countries'));
     }
 
     public function storeState(Request $request)
@@ -174,7 +174,7 @@ class CountryController extends Controller
     {
         $countries = Country::orderBy('id','desc')->get();                             
         $cities = City::orderBy('id','desc')->get();        
-        return view('admin.country.city',compact('cities','countries'));
+        return view('supervisor.country.city',compact('cities','countries'));
     }
 
     public function getStateList(Request $request)
@@ -331,7 +331,7 @@ class CountryController extends Controller
         $countries = Country::orderBy('id','desc')->get(); 
         $zipcodes = Zipcode::orderBy('id','desc')->get();
         $near_by = Zipcode::where('near_by','=',null)->get();                          
-        return view('admin.country.zipcode',compact('countries','zipcodes','near_by'));
+        return view('supervisor.country.zipcode',compact('countries','zipcodes','near_by'));
     }
 
     public function storeZipcode(Request $request)

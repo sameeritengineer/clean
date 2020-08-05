@@ -103,7 +103,7 @@ class FrontmainCantroller extends Controller
     }
     public function Services()
     {
-    	return view('front.Services');
+    	return view('front.services');
     }
     public function Pricing()
     {
