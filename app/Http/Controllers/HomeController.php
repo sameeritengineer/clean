@@ -29,15 +29,15 @@ class HomeController extends Controller
         }
         else if(auth()->user()->roles()->first()->name == "support")
         {
-            return view('support.dashboard');
+            return redirect()->route('support::dashboard');
         }
         else if(auth()->user()->roles()->first()->name == "manager")
         {
-            return view('manager.dashboard');
+            return redirect()->route('manager::dashboard');
         }
         else if(auth()->user()->roles()->first()->name == "supervisior")
         {
-            return view('supervisior.dashboard');
+            return redirect()->route('supervisior::dashboard');
         }
         else
         {
