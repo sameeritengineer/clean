@@ -42,8 +42,8 @@
                 </div>
                 <div class="card-body collapse in">
                   <div class="card-block card-dashboard">
-                    <div class="table-responsive">
-                    <table class="table table-striped table-bordered zero-configuration">
+                    <div class="">
+                    <table class="table-responsive table table-striped table-bordered zero-configuration">
                       <thead>
                         <tr>
                           <th>S.No</th>
