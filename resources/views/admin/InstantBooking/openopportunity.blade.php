@@ -42,8 +42,8 @@
                 </div>
                 <div class="card-body collapse in">
                   <div class="card-block card-dashboard">
-                    <div class="table-responsive">
-                    <table class="table table-striped table-bordered zero-configuration">
+                    <div class="">
+                    <table class="table-responsive table table-striped table-bordered zero-configuration">
                       <thead>
                         <tr>
                           <th>S.No</th>
@@ -52,8 +52,7 @@
                           <th>Job Id</th>
                           <th>Customer Zipcode</th>
                           <th>Customer Address</th>
-                          <th>Booking Date</th>
-                          <th>Booking Time</th>
+                          <th>Booking Date & Time</th>
                           <th>Customer Booked Services</th>
                           <th></th>
                         </tr>
@@ -67,8 +66,7 @@
                           <td>{{$Opportunite->id}}</td> 
                           <td>{{$Opportunite->zipcode}}</td>                     
                           <td>{{$Opportunite->customer_address}}</td>
-                          <td>{{$Opportunite->date}}</td>
-                          <td>{{$Opportunite->time}}</td>
+                          <td>{{$Opportunite->date}} {{$Opportunite->time}}</td>
                           <td>{{$Opportunite->Services_names}}</td>
                           <td><a href="{{route('show_opportunity',[$Opportunite->id])}}" class="btn btn-warning">Assign To</a></td>
                         </tr>
