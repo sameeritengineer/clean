@@ -265,9 +265,9 @@ Route::group(['namespace' => 'manager', 'as' => 'manager::', 'prefix' => 'manage
 	Route::match(['get','post'],'register','ManagerController@register')->name('register');
 	Route::match(['get','post'],'login','ManagerController@login')->name('login');
 	Route::post('logout','ManagerController@logout')->name('logout');
-	Route::middleware(['auth'])->group(function ()
+	Route::middleware(['manager','auth'])->group(function ()
 	{
-		Route::get('dashboard','JobController@dashboard')->name('dashboard');
+		Route::get('dashboard','PageController@dashboard')->name('dashboard');
 
 		Route::get('unfilled_jobs','JobController@unfilled_jobs')->name('unfilled_jobs');
 
@@ -352,7 +352,7 @@ Route::group(['namespace' => 'Supervisior', 'as' => 'supervisior::', 'prefix' =>
 	Route::post('logout','SupervisiorController@logout')->name('logout');
 	Route::middleware(['supervisior','auth'])->group(function ()
 	{
-		Route::get('dashboard','ProviderController@dashboard')->name('dashboard');
+		Route::get('dashboard','PageController@dashboard')->name('dashboard');
 		Route::get('employees','ProviderController@employee')->name('employees');
 		Route::post('employees_permission','ProviderController@employees_permission')->name('employees_permission');
 		Route::match(['get','post'],'approve_pic','ProviderController@approve_pictures')->name('approve_pictures');
@@ -410,9 +410,9 @@ Route::group(['namespace' => 'Support', 'as' => 'support::', 'prefix' => 'suppor
 	Route::match(['get','post'],'register','SupportController@register')->name('register');
 	Route::match(['get','post'],'login','SupportController@login')->name('login');
 	Route::post('logout','SupportController@logout')->name('logout');
-	Route::middleware(['auth'])->group(function ()
+	Route::middleware(['support','auth'])->group(function ()
 	{
-		Route::get('dashboard','WorkerController@dashboard')->name('dashboard');
+		Route::get('dashboard','PageController@dashboard')->name('dashboard');
 		Route::get('get-state-list','CountryController@getStateList');
 		Route::get('get-city-list','CountryController@getCityList');
 		Route::get('get-zipcode-list','CountryController@getZipcodeList');
