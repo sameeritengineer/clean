@@ -265,7 +265,7 @@ Route::group(['namespace' => 'manager', 'as' => 'manager::', 'prefix' => 'manage
 	Route::match(['get','post'],'register','ManagerController@register')->name('register');
 	Route::match(['get','post'],'login','ManagerController@login')->name('login');
 	Route::post('logout','ManagerController@logout')->name('logout');
-	Route::middleware(['manager'])->group(function ()
+	Route::middleware(['auth'])->group(function ()
 	{
 		Route::get('dashboard','JobController@dashboard')->name('dashboard');
 
