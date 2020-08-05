@@ -95,6 +95,7 @@ class PageController extends Controller
 
         //Top Service Provider List
         $AllProvider = ProviderReview::all()->groupBy('provider_id');
+        if(count($AllProvider)>0):
         $count = count($AllProvider);
         for ($i=0; $i < $count ; $i++)
         {
@@ -128,7 +129,7 @@ class PageController extends Controller
               $providerdetails->save();
           }
         }
-
+        endif;
         $RecentCleaners = TopRated_Provider::join('users', 'users.id', '=', 'top_rated__providers.Provider_id')
         ->select('users.first_name as first_name','users.image as image','top_rated__providers.Avg_Rating as Avg_Rating')
         ->orderBy('Avg_Rating','desc')

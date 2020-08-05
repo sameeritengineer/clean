@@ -699,6 +699,8 @@ class InstantBookingCantroller extends Controller
                             $miles = $dist * 60 * 1.1515;
                             $distance = $miles * 1.609344;
                             $user->distance = (int)$distance;
+                          else:
+                            $user->distance = 0;
                           endif;
                         endforeach;
                         else:
@@ -802,6 +804,8 @@ class InstantBookingCantroller extends Controller
                       $miles = $dist * 60 * 1.1515;
                       $distance = $miles * 1.609344;
                       $user->distance = (int)$distance;
+                    else:
+                      $user->distance = 0;
                     endif;
                   endforeach;
                   else:
