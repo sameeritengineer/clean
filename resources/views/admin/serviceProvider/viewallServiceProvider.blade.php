@@ -1,4 +1,4 @@
-@extends('support.layouts.index')
+@extends('admin.layouts.index')
 @section('title','Service Providers')
 @section('content')
 <div class="app-content content container-fluid">
