@@ -107,7 +107,7 @@ h2.title-h2-un {
                     <td>{{$user->AverageRating}}</td>
                     <td>{{$user->NoOfJobsCompleted}}</td>
                     <td>{{$user->first_name." ".$user->last_name}}</td>
-                    <td>{{$user->distance}} km</td>
+                    <td>{{number_format($user->distance,2)}} km</td>
                     <td>{{$user->mobile}}</td>
                   </tr>
                 @endforeach
@@ -181,7 +181,7 @@ h2.title-h2-un {
                     <td>{{$user->AverageRating}}</td>
                     <td>{{$user->NoOfJobsCompleted}}</td>
                     <td>{{$user->first_name." ".$user->last_name}}</td>
-                    <td>{{$user->distance}} km</td>
+                    <td>{{number_format($user->distance,2)}} km</td>
                     <td>{{$user->mobile}}</td>
                   </tr>
                 @endforeach
