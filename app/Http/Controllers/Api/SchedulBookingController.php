@@ -1,9 +1,9 @@
-﻿<?php
+<?php
+
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use App\Service;
@@ -37,7 +37,6 @@ use File;
 use Mail;
 use Redirect;
 use App\Common\Notification;
-
 class SchedulBookingController extends Controller
 {
     public function __construct(Request $request)
