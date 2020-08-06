@@ -108,12 +108,12 @@ class ServiceproviderController extends Controller
                    } 
                 }
                 $data = array('email' => $request->email);
-                Mail::send('approvel.sendUsernamePassword',$data, function($message) use ($data)
-                {
-                    $message->from(config('mail.username'));
-                    $message->to($data['email']);
-                    $message->subject('Email Verification');
-                });
+                // Mail::send('approvel.sendUsernamePassword',$data, function($message) use ($data)
+                // {
+                //     $message->from(config('mail.username'));
+                //     $message->to($data['email']);
+                //     $message->subject('Email Verification');
+                // });
                 return back()->with('success', "Service Provider added successfully");
               }              
           }           
@@ -335,12 +335,12 @@ class ServiceproviderController extends Controller
         if($user->update())
         {   
             $data = array('email' => $user->email);
-            Mail::send('approvel.providerRegistrationapprovel',$data, function($message) use ($data)
-            {
-                $message->from(config('mail.username'));
-                $message->to($data['email']);
-                $message->subject('Email Verification');
-            });
+            // Mail::send('approvel.providerRegistrationapprovel',$data, function($message) use ($data)
+            // {
+            //     $message->from(config('mail.username'));
+            //     $message->to($data['email']);
+            //     $message->subject('Email Verification');
+            // });
             return 1;
         }
         else
@@ -457,12 +457,12 @@ class ServiceproviderController extends Controller
           if($provider_bio->update())
           {  
            $data = array('email' => $useremail->email);
-            Mail::send('approvel.providerbioapprovel',$data, function($message) use ($data)
-            {
-                $message->from(config('mail.username'));
-                $message->to($data['email']);
-                $message->subject('Email Verification');
-            });
+            // Mail::send('approvel.providerbioapprovel',$data, function($message) use ($data)
+            // {
+            //     $message->from(config('mail.username'));
+            //     $message->to($data['email']);
+            //     $message->subject('Email Verification');
+            // });
               if($user != null)
               {    
                   $user->delete();
@@ -489,12 +489,12 @@ class ServiceproviderController extends Controller
           if($provider_bio->save())
           { 
             $data = array('email' => $useremail->email);
-            Mail::send('approvel.sendUsernamePassword',$data, function($message) use ($data)
-            {
-                $message->from(config('mail.username'));
-                $message->to($data['email']);
-                $message->subject('Email Verification');
-            });
+            // Mail::send('approvel.sendUsernamePassword',$data, function($message) use ($data)
+            // {
+            //     $message->from(config('mail.username'));
+            //     $message->to($data['email']);
+            //     $message->subject('Email Verification');
+            // });
             if($user != null)
             {    
                 $user->delete();
