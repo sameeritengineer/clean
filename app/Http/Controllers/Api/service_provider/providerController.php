@@ -472,7 +472,7 @@ class providerController extends Controller
                  $extension=$image->getClientOriginalExtension();
                  $filename=rand(100,999999).time().'.'.$extension;
                  $fullsize_image_path=public_path('profile/'.$filename);
-                 Image::make($image)->save($fullsize_image_path);
+                 Imageresize::make($image)->save($fullsize_image_path);
                  $providerprofile->image  = $filename;
                  $providerprofile->status ='0';
                  File::delete($thumbnailImagePath);
@@ -494,7 +494,7 @@ class providerController extends Controller
                   $extension=$image->getClientOriginalExtension();
                   $filename=rand(100,999999).time().'.'.$extension;
                   $fullsize_image_path=public_path('profile/'.$filename);
-                  Image::make($image)->save($fullsize_image_path);
+                  Imageresize::make($image)->save($fullsize_image_path);
                   $add_new_profile->image = $filename;
                   
                   if($add_new_profile->save())
