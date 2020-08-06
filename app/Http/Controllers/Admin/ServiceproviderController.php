@@ -391,19 +391,18 @@ class ServiceproviderController extends Controller
 
     public function updateProfileStatus(Request $request)
     {
-      $user = ProviderProfile::find($request->id);
-      return $user;            
+      $user = ProviderProfile::find($request->id);         
       $updateimg = User::where('id', $user->serviceprovider_id)->first();
       $updateimg->image = $user->image;
       if($updateimg->update())
         {
           $data = array('email' => $updateimg->email);
-          Mail::send('approvel.providerprofileapprovel',$data, function($message) use ($data)
-          {
-              $message->from(config('mail.username'));
-              $message->to($data['email']);
-              $message->subject('Email Verification');
-          });
+          // Mail::send('approvel.providerprofileapprovel',$data, function($message) use ($data)
+          // {
+          //     $message->from(config('mail.username'));
+          //     $message->to($data['email']);
+          //     $message->subject('Email Verification');
+          // });
           if($user != null)
           {    
               $user->delete();
