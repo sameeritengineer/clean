@@ -63,7 +63,11 @@
                         @foreach($current_jobs as $currentjob)
                         <tr id="unapprovedprovider{{$currentjob->id}}">
                           <td>{{$loop->iteration}}</td>
-                          <td><img src="{{asset('profile/'.$currentjob->customer_profile)}}" style="height:80px;width:80px;"></td>
+                          <td>
+                            @if($currentjob->customer_profile)
+                            <img src="{{asset('profile/'.$currentjob->customer_profile)}}" style="height:80px;width:80px;">
+                            @endif
+                          </td>
                           <td>{{$currentjob->customer_id}}  |  {{$currentjob->customer_name}}</td>
                           <td>{{$currentjob->job_id}}</td> 
                           <td>{{$currentjob->Services_names}}</td>                     
