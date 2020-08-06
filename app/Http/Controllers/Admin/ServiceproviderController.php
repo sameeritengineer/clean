@@ -391,6 +391,7 @@ class ServiceproviderController extends Controller
 
     public function updateProfileStatus(Request $request)
     {
+      return response()->json($request->all());
       $user = ProviderProfile::find($request->id);            
       $updateimg = User::where('id', $user->serviceprovider_id)->first();
       $updateimg->image = $user->image;
