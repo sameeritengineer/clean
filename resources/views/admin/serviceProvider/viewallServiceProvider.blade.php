@@ -111,7 +111,7 @@
                           </td>
                           @endif
                           <!-- <td><button type="button" class="btn btn-icon btn-primary" data-id="" data-url="" onclick="viewproviderprofile({{$serviceprovider->id}});"data-toggle="modal" data-target="#default"><i class="fa fa-eye"></i></button></td> -->
-                          <td><a href="{{route('support::view_jobs',['id'=>$serviceprovider->id])}}"><button type="button" class="btn btn-icon btn-primary"><i class="fa fa-eye"></i> View Jobs</button></a></td>
+                          <td><a href="{{route('view_jobs',['id'=>$serviceprovider->id])}}"><button type="button" class="btn btn-icon btn-primary"><i class="fa fa-eye"></i> View Jobs</button></a></td>
                           <td><a href="{{route('showServiceProvider',['id'=>$serviceprovider->id])}}"><button type="button" class="btn btn-icon btn-primary"><i class="fa fa-eye"></i></button></a></td>
                           <td><a href="{{route('editServiceProvider',['id'=>$serviceprovider->id])}}"><button type="button" class="btn btn-icon btn-primary"><i class="ft-edit"></i></button></a></td>
                           <td><button type="button" class="btn btn-icon btn-primary" data-id="" data-url=""  onclick="deleteConfirm({{$serviceprovider->id}},'{{route('destroyServiceProvider')}}');" data-toggle="modal" data-target="#default"><i class="ft-trash"></i></button></td> 
