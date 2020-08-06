@@ -221,6 +221,7 @@ h2.title-h2-un {
           toastr.success("You'r successfully sent notification", "Great !");
           var url = $(location).attr('href');
           $('.load').load(url+ ' .data');
+          location.reload();
         }
         else
         {

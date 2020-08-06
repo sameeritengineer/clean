@@ -718,48 +718,6 @@ class InstantBookingCantroller extends Controller
               if(count($NoofJobs) > 0)
               {
                 $user->NoOfJobsCompleted= count($NoofJobs)." Jobs Done "; 
-                // foreach($NoofJobs as $job):
-                //   $distances = \App\InstantBooking::find($job->job_id);
-                //   $formattedAddrFrom = $provider->address;
-                //   $formattedAddrTo=$distances->customer_address;
-
-                //   $geocodeFrom = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddrFrom.'&sensor=false&key='.$apiKey);
-                //     $outputFrom = json_decode($geocodeFrom);
-                //     if(!empty($outputFrom->error_message))
-                //     {
-                //       return $outputFrom->error_message;
-                //     }
-                //     $geocodeTo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.$formattedAddrTo.'&sensor=false&key='.$apiKey);
-                //     $outputTo = json_decode($geocodeTo);
-                //     if(!empty($outputTo->error_message))
-                //     {
-                //       return $outputTo->error_message;
-                //     }
-                //     $latitudeFrom    = $outputFrom->results[0]->geometry->location->lat;
-                //     $longitudeFrom    = $outputFrom->results[0]->geometry->location->lng;
-                //     $latitudeTo        = $outputTo->results[0]->geometry->location->lat;
-                //     $longitudeTo    = $outputTo->results[0]->geometry->location->lng;
-                //     $theta    = $longitudeFrom - $longitudeTo;
-                //     $dist    = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) +  cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
-                //     $dist    = acos($dist);
-                //     $dist    = rad2deg($dist);
-                //     $miles    = $dist * 60 * 1.1515;
-                //     $unit = strtoupper("KM");
-                //     $user->distance = round($miles * 1.609344, 2).' km';
-
-                // endforeach;
-                // $lat1 = "30.9661";
-                // $lat2 = "30.6942";
-                // $lon1 = "76.5231";
-                // $lon2 = "76.8606";
-                // $theta = $lon1 - $lon2;
-                // $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
-                // $dist = acos($dist);
-                // $dist = rad2deg($dist);
-                // $miles = $dist * 60 * 1.1515;
-                // $distance = $miles * 1.609344;
-                // $user->distance = (int)$distance;
-
                 if(!is_null($provider->lat) && !is_null($provider->long)):
                   foreach($NoofJobs as $job):
                     $get_lat_longs = \App\InstantBooking::find($job->job_id);

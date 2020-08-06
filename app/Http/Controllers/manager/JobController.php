@@ -250,16 +250,40 @@ class JobController extends Controller
                   $user = \App\User::find($provider->userId);
                   if($user != null)
                   {
-                    $NoofJobs = \App\Instant_schedule_job::where('provider_id' , $user->id)->where('status' , '1')->get();
+                    $NoofJobs = Instant_schedule_job::where('provider_id' , $user->id)->where('status' , '1')->get();
                     if(count($NoofJobs) > 0)
                     {
                       $user->NoOfJobsCompleted= count($NoofJobs)." Jobs Done "; 
+                      
+                      if(!is_null($provider->lat) && !is_null($provider->long)):
+                        foreach($NoofJobs as $job):
+                          $get_lat_longs = \App\InstantBooking::find($job->job_id);
+                          if(!is_null($get_lat_longs)):
+                            $lat1 = $provider->lat;
+                            $lat2 = $get_lat_longs->lat;
+                            $lon1 = $provider->long;
+                            $lon2 = $get_lat_longs->long;
+                            $theta = $lon1 - $lon2;
+                            $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+                            $dist = acos($dist);
+                            $dist = rad2deg($dist);
+                            $miles = $dist * 60 * 1.1515;
+                            $distance = $miles * 1.609344;
+                            $user->distance = $distance;
+                          else:
+                            $user->distance = 0;
+                          endif;
+                        endforeach;
+                        else:
+                          $user->distance = 0;
+                      endif;
                     }
                     else
                     {
                       $user->NoOfJobsCompleted= "No Completed jobs";
+                      $user->distance = "0";
                     }
-                    $review = \App\ProviderReview::where('provider_id', $user->id)->get();     
+                    $review = ProviderReview::where('provider_id', $user->id)->get();     
                     $totalreview = count($review);
                     if($totalreview > 0)
                     {
@@ -290,17 +314,40 @@ class JobController extends Controller
             $user = \App\User::find($provider->userId);
             if($user != null)
             {
-              $NoofJobs = \App\Instant_schedule_job::where('provider_id' , $user->id)->where('status' , '1')->get();
+              $NoofJobs = Instant_schedule_job::where('provider_id' , $user->id)->where('status' , '1')->get();
               if(count($NoofJobs) > 0)
               {
                 $user->NoOfJobsCompleted= count($NoofJobs)." Jobs Done "; 
+                if(!is_null($provider->lat) && !is_null($provider->long)):
+                  foreach($NoofJobs as $job):
+                    $get_lat_longs = \App\InstantBooking::find($job->job_id);
+                    if(!is_null($get_lat_longs)):
+                      $lat1 = $provider->lat;
+                      $lat2 = $get_lat_longs->lat;
+                      $lon1 = $provider->long;
+                      $lon2 = $get_lat_longs->long;
+                      $theta = $lon1 - $lon2;
+                      $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+                      $dist = acos($dist);
+                      $dist = rad2deg($dist);
+                      $miles = $dist * 60 * 1.1515;
+                      $distance = $miles * 1.609344;
+                      $user->distance = $distance;
+                    else:
+                      $user->distance = 0;
+                    endif;
+                  endforeach;
+                  else:
+                    $user->distance = 0;
+                endif;
               }
               else
               {
                 $user->NoOfJobsCompleted= "No Completed jobs";
+                $user->distance = "0";
               }
 
-              $review = \App\ProviderReview::where('provider_id', $user->id)->get();     
+              $review = ProviderReview::where('provider_id', $user->id)->get();     
               $totalreview = count($review);
               if($totalreview > 0)
               {
