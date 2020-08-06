@@ -215,7 +215,7 @@ function updateProfileStatus(id)
       ({
         type: 'POST',
         data: {"id":id," _token": "{{ csrf_token() }}",},
-        url: "{{url('serviceadmin/updateProfileStatus')}}",
+        url: "{{route('updateProfileStatus')}}",
         success: function (response)
         {
           console.log(response)
