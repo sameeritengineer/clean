@@ -647,7 +647,7 @@ class InstantBookingCantroller extends Controller
               {
                 foreach($providers as $provider)
                 {
-                  $user = \App\User::find($provider->userId);
+                  $user = \App\User::whereHas('roles', function ($query){ $query->where('name','provider'); })->find($provider->userId);
                   if($user != null)
                   {
                     $NoofJobs = Instant_schedule_job::where('provider_id' , $user->id)->where('status' , '1')->get();
