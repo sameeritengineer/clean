@@ -616,7 +616,7 @@ class InstantBookingCantroller extends Controller
            $customername = User::where('id' , $data->cutomer_id)->first();
            $data->cust_firstname= $customername->first_name;
            $data->cust_image= $customername->image; 
-           $html.="<tr><td style='curser:pointer' onclick='get_job_list(".$data->zipcode.",".$data.")'>".$data->id."</td><td>".$data->cust_firstname."</td><td>".$data->customer_address."</td><td>".$data->zipcode."</td><td>".$data->date."</td><td>".$data->time."</td><td>".$data->Services_names."</td></tr>";
+           $html.="<tr><td><button class='btn btn-info' onclick='get_job_list(".$data->zipcode.",".$data.")'>View Job</button></td><td>".$data->id."</td><td>".$data->cust_firstname."</td><td>".$data->customer_address."</td><td>".$data->zipcode."</td><td>".$data->date."</td><td>".$data->time."</td><td>".$data->Services_names."</td></tr>";
         }
       }
       else

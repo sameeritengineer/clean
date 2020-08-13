@@ -53,6 +53,7 @@
 
                             <table class="table">
                               <thead>
+                                <th>View Job</th>
                                 <th>Job ID</th>
                                 <th>Customer Name</th>
                                 <th>Customer Address</th>
@@ -86,7 +87,7 @@ function get_state_list(country_id)
   $('.append_countries').html('');
   $('.append_provider_list').html('');
   $('.open_opportunity').css('display','none');
-  var url = "{{secure_url('serviceadmin/get_unfilled_jobs_state')}}/"+country_id;
+  var url = "{{url('serviceadmin/get_unfilled_jobs_state')}}/"+country_id;
   $.ajax
   ({
     type: "get",   
@@ -111,7 +112,7 @@ function states(id)
   $('.append_cities').html('');
   $('.append_provider_list').html('');
   $('.open_opportunity').css('display','none');
-  var url = "{{secure_url('serviceadmin/get_unfilled_jobs_city')}}/"+id;
+  var url = "{{url('serviceadmin/get_unfilled_jobs_city')}}/"+id;
   $.ajax
   ({
     type: "get",   
@@ -129,7 +130,7 @@ function get_jobs_lists(city_id)
   $('.open_opportunity').css('display','none');
   $('.append_jobs').html('');
   $('.append_provider_list').html('');
-  var url = "{{secure_url('serviceadmin/get_unfilled_jobs')}}/"+city_id;
+  var url = "{{url('serviceadmin/get_unfilled_jobs')}}/"+city_id;
   $.ajax
   ({
     type: "get",   
@@ -146,7 +147,7 @@ function get_jobs_lists(city_id)
 function get_job_list(zipcode,data)
 {
   $('.append_provider_list').html('');
-  var url = "{{secure_url('serviceadmin/get_provider_zipcode')}}";
+  var url = "{{url('serviceadmin/get_provider_zipcode')}}";
   $.ajax
   ({
     type: "post",   
