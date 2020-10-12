@@ -67,98 +67,211 @@ class NotificationController extends Controller
 
     public function job_assigned_by_admin_provider_noti(Request $request)
     {
-        $users = User::whereIn('id',$request->provider_id)->get();
-        if(count($users)>0)
-        {
-        foreach($users as $user)
+      $dataaaa = array();
+      $opportunity = \App\InstantBooking::find($request->job_id);
+      $idsss = explode(',',$opportunity->Services);
+      for($i=0;$i<count($idsss);$i++)
+      {
+        $getid =  $idsss[$i];
+        $service = \App\Servicetype::where('id',$getid)->first();
+        array_push($dataaaa, $service->name);
+      }
+      $service_string = implode(' , ', $dataaaa);
+      $opportunity->Services_names = $service_string;
+      
+      $notificatiotitle = 'Job Assigned By Admin';
+      $notificatiobody  = 'Provider Notification';
+      $notificationtype = "assignedByAdmin";
+      $user = \App\User::whereIn('id',$request->provider_id)->first();
+
+      if($user->device_type == "A")
+      {
+          $url = "https://fcm.googleapis.com/fcm/send";
+          $serverKey = 'AAAA1zGBIz8:APA91bFJCHqSlvOpugSxb5_Hxiq8yWmpplNACcVei7ceXWG0lcVrsXVtC_wGeumNLXdtgrL4oGHvmEqRBMFz1MmYKotTM508S2ueNRv2lzTdggR1qVbmT4sMzlAVGezKhmKVREfzZ_EZ'; 
+          $message = 
+          [ 
+            "to" => $user->device_id,
+            "data" => 
+                [
+                  "title"        => "New Appointments",
+                  "Service"      => $opportunity->Services_names,
+                  "address"      => $opportunity->customer_address.",zipcode ".$opportunity->zipcode,
+                  "Date"         => $opportunity->date ,
+                  "Time"         => $opportunity->time,
+                  "job_id"       => $opportunity->id,
+                  "customer_id"  => $opportunity->cutomer_id,
+                ]
+          ];
+          $json = json_encode($message);
+          $headers = array(
+            'Content-Type: application/json',
+            'Authorization: key='. $serverKey
+          );
+          $ch = curl_init();
+          curl_setopt( $ch,CURLOPT_URL, $url);
+          curl_setopt( $ch,CURLOPT_POST, true );
+          curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+          curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+          curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+          curl_setopt( $ch,CURLOPT_POSTFIELDS, $json);
+          //Send the request
+          $result = curl_exec($ch);
+          //Close request
+          if ($result === FALSE) 
           {
-            if($user->device_type == "A")
-            {
-              $url = "https://fcm.googleapis.com/fcm/send";
-              $serverKey = 'AAAA1zGBIz8:APA91bFJCHqSlvOpugSxb5_Hxiq8yWmpplNACcVei7ceXWG0lcVrsXVtC_wGeumNLXdtgrL4oGHvmEqRBMFz1MmYKotTM508S2ueNRv2lzTdggR1qVbmT4sMzlAVGezKhmKVREfzZ_EZ'; 
-              $message = 
-              [ 
-                "to" => $user->device_id,
-                "data" => 
-                    [
-                      "title"     =>  "Job assigned by admin",
-                      "body"      =>  "Job assigned by admin",
-                      "notificationType" => "send notification to worker"
-                    ],
-                
-              ];
-              $json = json_encode($message);
-              $headers = array(
-                'Content-Type: application/json',
-                'Authorization: key='. $serverKey
-              );
-              $ch = curl_init();
-              curl_setopt( $ch,CURLOPT_URL, $url);
-              curl_setopt( $ch,CURLOPT_POST, true );
-              curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
-              curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
-              curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
-              curl_setopt( $ch,CURLOPT_POSTFIELDS, $json);
-              //Send the request
-              $result = curl_exec($ch);
-              //Close request
-              if ($result === FALSE) 
-              {
-                die('FCM Send Error: ' . curl_error($ch)); 
-              }
-              else
-              {
-                curl_close($ch);
-              }
-            }
-            else
-            { 
-              $url = "https://fcm.googleapis.com/fcm/send";
-              $serverKey = 'AAAA1zGBIz8:APA91bFJCHqSlvOpugSxb5_Hxiq8yWmpplNACcVei7ceXWG0lcVrsXVtC_wGeumNLXdtgrL4oGHvmEqRBMFz1MmYKotTM508S2ueNRv2lzTdggR1qVbmT4sMzlAVGezKhmKVREfzZ_EZ'; 
-              $message = 
-                [ 
-                  "to" => $user->device_id,
-                  "priority" => 'high',
-                  "sound" => 'default', 
-                  "badge" => '1',
-                  "notification" =>
-                  [
-                    "title" => "Job assigned by admin",
-                    "body"  => "Job assigned by admin",
-                  ],
-                  "data"=>["notificationType" => "send notification to worker"]
-                  
-                ];
-                $json = json_encode($message);
-                $headers = array(
-                  'Content-Type: application/json',
-                  'Authorization: key='. $serverKey
-                );
-                $ch = curl_init();
-                curl_setopt( $ch,CURLOPT_URL, $url);
-                curl_setopt( $ch,CURLOPT_POST, true );
-                curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
-                curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
-                curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
-                curl_setopt( $ch,CURLOPT_POSTFIELDS, $json);
-                //Send the request
-                $result = curl_exec($ch);
-                //Close request
-                if ($result === FALSE) 
-                {
-                  die('FCM Send Error: ' . curl_error($ch));
-                }
-                else
-                {
-                  curl_close($ch);
-                }
-            }    
+            die('FCM Send Error: ' . curl_error($ch)); 
           }
-          return "success";
-        }
-        else
-        {
-            return "error";
-        }
+          else
+          {
+            curl_close($ch);   
+          }
+      }
+      else
+      { 
+        $url = "https://fcm.googleapis.com/fcm/send";
+        $serverKey = 'AAAA1zGBIz8:APA91bFJCHqSlvOpugSxb5_Hxiq8yWmpplNACcVei7ceXWG0lcVrsXVtC_wGeumNLXdtgrL4oGHvmEqRBMFz1MmYKotTM508S2ueNRv2lzTdggR1qVbmT4sMzlAVGezKhmKVREfzZ_EZ'; 
+        $message = 
+          [ 
+            "to" => $user->device_id,
+            "priority" => 'high',
+            "sound" => 'default', 
+            "badge" => '1',
+            "notification" =>
+              [
+                  "title" => $notificatiotitle,
+                  "body" => $opportunity->Services_names,
+              ],
+            "data" => 
+              [ 
+                "notificationType" => $notificationtype,
+                "Service"          => $opportunity->Services_names,
+                "address"          => $opportunity->customer_address.",zipcode ".$opportunity->zipcode,
+                "Date"             => $opportunity->date ,
+                "Time"             => $opportunity->time,
+                "job_id"           => $opportunity->id,
+                "customer_id"      => $opportunity->cutomer_id,
+              ]
+          ];
+          $json = json_encode($message);
+          $headers = array(
+            'Content-Type: application/json',
+            'Authorization: key='. $serverKey
+          );
+          $ch = curl_init();
+          curl_setopt( $ch,CURLOPT_URL, $url);
+          curl_setopt( $ch,CURLOPT_POST, true );
+          curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+          curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+          curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+          curl_setopt( $ch,CURLOPT_POSTFIELDS, $json);
+          //Send the request
+          $result = curl_exec($ch);
+          //Close request
+          if ($result === FALSE) 
+          {
+            die('FCM Send Error: ' . curl_error($ch));
+          }
+          else
+          {
+            curl_close($ch); 
+          }
+      }
+      return "success";
+
+
+
+        // $users = User::whereIn('id',$request->provider_id)->get();
+        // if(count($users)>0)
+        // {
+        // foreach($users as $user)
+        //   {
+        //     if($user->device_type == "A")
+        //     {
+        //       $url = "https://fcm.googleapis.com/fcm/send";
+        //       $serverKey = 'AAAA1zGBIz8:APA91bFJCHqSlvOpugSxb5_Hxiq8yWmpplNACcVei7ceXWG0lcVrsXVtC_wGeumNLXdtgrL4oGHvmEqRBMFz1MmYKotTM508S2ueNRv2lzTdggR1qVbmT4sMzlAVGezKhmKVREfzZ_EZ'; 
+        //       $message = 
+        //       [ 
+        //         "to" => $user->device_id,
+        //         "data" => 
+        //             [
+        //               "title"     =>  "Job assigned by admin",
+        //               "body"      =>  "Job assigned by admin",
+        //               "notificationType" => "send notification to worker"
+        //             ],
+                
+        //       ];
+        //       $json = json_encode($message);
+        //       $headers = array(
+        //         'Content-Type: application/json',
+        //         'Authorization: key='. $serverKey
+        //       );
+        //       $ch = curl_init();
+        //       curl_setopt( $ch,CURLOPT_URL, $url);
+        //       curl_setopt( $ch,CURLOPT_POST, true );
+        //       curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+        //       curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+        //       curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+        //       curl_setopt( $ch,CURLOPT_POSTFIELDS, $json);
+        //       //Send the request
+        //       $result = curl_exec($ch);
+        //       //Close request
+        //       if ($result === FALSE) 
+        //       {
+        //         die('FCM Send Error: ' . curl_error($ch)); 
+        //       }
+        //       else
+        //       {
+        //         curl_close($ch);
+        //       }
+        //     }
+        //     else
+        //     { 
+        //       $url = "https://fcm.googleapis.com/fcm/send";
+        //       $serverKey = 'AAAA1zGBIz8:APA91bFJCHqSlvOpugSxb5_Hxiq8yWmpplNACcVei7ceXWG0lcVrsXVtC_wGeumNLXdtgrL4oGHvmEqRBMFz1MmYKotTM508S2ueNRv2lzTdggR1qVbmT4sMzlAVGezKhmKVREfzZ_EZ'; 
+        //       $message = 
+        //         [ 
+        //           "to" => $user->device_id,
+        //           "priority" => 'high',
+        //           "sound" => 'default', 
+        //           "badge" => '1',
+        //           "notification" =>
+        //           [
+        //             "title" => "Job assigned by admin",
+        //             "body"  => "Job assigned by admin",
+        //           ],
+        //           "data"=>["notificationType" => "send notification to worker"]
+                  
+        //         ];
+        //         $json = json_encode($message);
+        //         $headers = array(
+        //           'Content-Type: application/json',
+        //           'Authorization: key='. $serverKey
+        //         );
+        //         $ch = curl_init();
+        //         curl_setopt( $ch,CURLOPT_URL, $url);
+        //         curl_setopt( $ch,CURLOPT_POST, true );
+        //         curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+        //         curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+        //         curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+        //         curl_setopt( $ch,CURLOPT_POSTFIELDS, $json);
+        //         //Send the request
+        //         $result = curl_exec($ch);
+        //         //Close request
+        //         if ($result === FALSE) 
+        //         {
+        //           die('FCM Send Error: ' . curl_error($ch));
+        //         }
+        //         else
+        //         {
+        //           curl_close($ch);
+        //         }
+        //     }    
+        //   }
+        //   return "success";
+        // }
+        // else
+        // {
+        //     return "error";
+        // }
     }
 }

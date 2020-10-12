@@ -54,6 +54,7 @@ h2.title-h2-un {
 </style>
 <div class="unfilled_jobs-wrapper">
       <form method="post" action="{{route('job_assigned_by_admin_provider_noti')}}" id="send_notification">@csrf
+      <input type="hidden" name="job_id" value="{{$data['id']}}">
       <div class="row card">
         <div class="col-md-12">
           <h2 class="title-h2-un">Job</h2>
@@ -201,7 +202,8 @@ h2.title-h2-un {
 
 </div>
 <script type="text/javascript">
-  $('#send_notification').submit(function(e){
+  $('#send_notification').submit(function(e)
+  {
     e.preventDefault();
     var action = $(this).attr('action');
     var form = $(this)[0];
@@ -216,6 +218,7 @@ h2.title-h2-un {
       processData: false,
       success:function(data)
       {
+        console.log(data)
         if(data == "success")
         {
           toastr.success("You'r successfully sent notification", "Great !");

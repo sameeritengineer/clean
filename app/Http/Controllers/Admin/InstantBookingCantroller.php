@@ -670,12 +670,15 @@ class InstantBookingCantroller extends Controller
                             $miles = $dist * 60 * 1.1515;
                             $distance = $miles * 1.609344;
                             $user->distance = $distance;
+                            $user->job_id = $get_lat_longs->id;
                           else:
                             $user->distance = 0;
+                            $user->job_id = 0;
                           endif;
                         endforeach;
                         else:
                           $user->distance = 0;
+                          $user->job_id = 0;
                       endif;
                     }
                     else
@@ -733,12 +736,15 @@ class InstantBookingCantroller extends Controller
                       $miles = $dist * 60 * 1.1515;
                       $distance = $miles * 1.609344;
                       $user->distance = $distance;
+                      $user->job_id = $get_lat_longs->id;
                     else:
                       $user->distance = 0;
+                      $user->job_id = 0;
                     endif;
                   endforeach;
                   else:
                     $user->distance = 0;
+                    $user->job_id = 0;
                 endif;
               }
               else
