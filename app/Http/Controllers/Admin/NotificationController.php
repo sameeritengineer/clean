@@ -67,6 +67,7 @@ class NotificationController extends Controller
 
     public function job_assigned_by_admin_provider_noti(Request $request)
     {
+      return $request->all();
       $dataaaa = array();
       $opportunity = \App\InstantBooking::find($request->job_id);
       $idsss = explode(',',$opportunity->Services);
@@ -83,7 +84,22 @@ class NotificationController extends Controller
       $notificatiobody  = 'Provider Notification';
       $notificationtype = "assignedByAdmin";
       $user = \App\User::whereIn('id',$request->provider_id)->first();
-
+      if(isset($request->nearby_message) && !empty($request->nearby_message))
+      {
+        $message = $request->nearby_message;
+      }
+      elseif(isset($request->unavailable_message) && !empty($request->unavailable_message))
+      {
+        $message = $request->unavailable_message;
+      }
+      elseif(isset($request->active_message) && !empty($request->active_message))
+      {
+        $message = $request->active_message;
+      }
+      else
+      {
+        $message = '';
+      }
       if($user->device_type == "A")
       {
           $url = "https://fcm.googleapis.com/fcm/send";
@@ -92,21 +108,19 @@ class NotificationController extends Controller
           [ 
             "to" => $user->device_id,
             "data" => 
-                [
-                  "title"        => "New Appointments",
-                  "Service"      => $opportunity->Services_names,
-                  "address"      => $opportunity->customer_address.",zipcode ".$opportunity->zipcode,
-                  "Date"         => $opportunity->date ,
-                  "Time"         => $opportunity->time,
-                  "job_id"       => $opportunity->id,
-                  "customer_id"  => $opportunity->cutomer_id,
-                ]
+              [
+                "title"        => "New Appointments",
+                "Service"      => $opportunity->Services_names,
+                "address"      => $opportunity->customer_address.",zipcode ".$opportunity->zipcode,
+                "Date"         => $opportunity->date ,
+                "Time"         => $opportunity->time,
+                "job_id"       => $opportunity->id,
+                "customer_id"  => $opportunity->cutomer_id,
+                "message"=> $message,
+              ]
           ];
           $json = json_encode($message);
-          $headers = array(
-            'Content-Type: application/json',
-            'Authorization: key='. $serverKey
-          );
+          $headers = array('Content-Type: application/json','Authorization: key='. $serverKey);
           $ch = curl_init();
           curl_setopt( $ch,CURLOPT_URL, $url);
           curl_setopt( $ch,CURLOPT_POST, true );
@@ -138,8 +152,8 @@ class NotificationController extends Controller
             "badge" => '1',
             "notification" =>
               [
-                  "title" => $notificatiotitle,
-                  "body" => $opportunity->Services_names,
+                "title" => $notificatiotitle,
+                "body" => $opportunity->Services_names,
               ],
             "data" => 
               [ 

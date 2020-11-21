@@ -117,7 +117,10 @@ h2.title-h2-un {
                 @endif
               </tbody>
             </table>
-
+            @if((count($active_users)>0))
+            <div class="col-md-12"><textarea name="active_message"></textarea></div>
+            <div class="col-md-12"><button class="btn btn-primary sendtextbtn-un" type="submit">Send Notification</button></div>
+            @endif
             <h2 class="title-h2-un">Unavailable</h2>
             <table class="table table-striped">
               <thead>
@@ -154,7 +157,10 @@ h2.title-h2-un {
                 @endif
               </tbody>
             </table>
-
+            @if((count($unaviable_users)>0))
+            <div class="col-md-12"><textarea name="unavailable_message"></textarea></div>
+            <div class="col-md-12"><button class="btn btn-primary sendtextbtn-un" type="submit">Send Notification</button></div>
+            @endif
             <h2 class="title-h2-un">Near By</h2>
             <table class="table table-striped">
               <thead>
@@ -193,7 +199,8 @@ h2.title-h2-un {
             </table>
           </div>
         </div>
-        @if((count($unaviable_users)>0)||(count($active_users)>0)||(count($nearby)>0))
+        @if((count($nearby)>0))
+        <div class="col-md-12"><textarea name="nearby_message"></textarea></div>
         <div class="col-md-12"><button class="btn btn-primary sendtextbtn-un" type="submit">Send Notification</button></div>
         @endif
         <div class="col-md-12"></div>
