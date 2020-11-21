@@ -86,21 +86,21 @@ class NotificationController extends Controller
       $user = \App\User::whereIn('id',$request->provider_id)->first();
       if(isset($request->nearby_message) && !empty($request->nearby_message))
       {
-        $message = $request->nearby_message;
+        $text_message = $request->nearby_message;
       }
       elseif(isset($request->unavailable_message) && !empty($request->unavailable_message))
       {
-        $message = $request->unavailable_message;
+        $text_message = $request->unavailable_message;
       }
       elseif(isset($request->active_message) && !empty($request->active_message))
       {
-        $message = $request->active_message;
+        $text_message = $request->active_message;
       }
       else
       {
-        $message = '';
+        $text_message = '';
       }
-      return $message;
+
       if($user->device_type == "A")
       {
           $url = "https://fcm.googleapis.com/fcm/send";
@@ -117,7 +117,7 @@ class NotificationController extends Controller
                 "Time"         => $opportunity->time,
                 "job_id"       => $opportunity->id,
                 "customer_id"  => $opportunity->cutomer_id,
-                "message"=> $message,
+                "message"=> $text_message,
               ]
           ];
           $json = json_encode($message);
@@ -165,6 +165,7 @@ class NotificationController extends Controller
                 "Time"             => $opportunity->time,
                 "job_id"           => $opportunity->id,
                 "customer_id"      => $opportunity->cutomer_id,
+                "message"=> $text_message,
               ]
           ];
           $json = json_encode($message);
