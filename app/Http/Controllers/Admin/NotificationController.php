@@ -67,7 +67,7 @@ class NotificationController extends Controller
 
     public function job_assigned_by_admin_provider_noti(Request $request)
     {
-      return $request->all();
+      //return $request->all();
       $dataaaa = array();
       $opportunity = \App\InstantBooking::find($request->job_id);
       $idsss = explode(',',$opportunity->Services);
@@ -100,6 +100,7 @@ class NotificationController extends Controller
       {
         $message = '';
       }
+      return $message;
       if($user->device_type == "A")
       {
           $url = "https://fcm.googleapis.com/fcm/send";
