@@ -10,6 +10,8 @@ h2.title-h2-un {
     color: #080808;
     padding: 6px 20px;
     margin-top: 50px;
+    display: inline-block;
+    width: 100%;
 }
 .custom-control.custom-checkbox label:after {
     content: "";
